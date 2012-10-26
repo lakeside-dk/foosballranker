@@ -1,1 +1,5 @@
 foosballranker.iml
+.idea
+target
+update-appengine.sh
+rollback.sh
