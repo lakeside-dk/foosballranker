@@ -1,0 +1,186 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: lightgray;
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+}
+
+h2.toptitle {
+    margin-top: -10px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+
+h3 {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+a {
+    color: black;
+}
+#container {
+    margin: 0 auto;
+    min-width: 320px;
+    max-width: 600px;
+    overflow: auto;
+    background-color:white;
+}
+#header {
+    height: 40px;
+    background: #66b3ff;
+}
+#footer {
+    height: 20px;
+    clear: both;
+    padding: 1px;
+    background: #66b3ff;
+}
+
+#content {
+    width: 300px ;
+    margin-left: auto ;
+    margin-right: auto ;
+    background-color:white;
+}
+
+input, select {
+    font-size: 18px;
+    margin: 5px;
+    padding: 15px;
+    border: 2px solid gray;
+}
+
+input {
+    width: 130px;
+}
+
+.smallbutton {
+    font-size: 12px;
+    margin: 5px;
+    padding: 5px;
+    background-color: #DDD;
+    border: 2px solid gray;
+}
+
+#menu {
+    border-bottom: 2px solid #66B3FF;
+}
+
+.menubutton {
+    font-size: 18px;
+    margin: 5px;
+    padding: 10px;
+    background-color: #DDD;
+    border: 2px solid gray;
+}
+
+.button {
+    font-size: 18px;
+    margin: 5px;
+    padding: 15px;
+    width: 128px;
+    background-color: #DDD;
+    border: 2px solid gray;
+}
+
+.center {
+    text-align: center;
+    margin: 10px auto;
+}
+
+.section {
+    margin: 10px;
+}
+
+.small {
+    font-size:10px;
+}
+
+
+
+.fieldset {
+    width:280px;
+    border: none;
+    text-align: center;
+}
+
+.scorebutton {
+    float:left;
+    font-size: 18px;
+    margin: 5px;
+    width: 46px;
+    height: 46px;
+}
+
+.clearleft {
+    clear:left;
+}
+
+.red {
+    background-color: #ffbabf;
+}
+
+.blue {
+    background-color: #66B3FF;
+}
+
+.inline {
+    float: left;
+}
+
+.clearBoth { clear:both; }
+
+
+
+form p {
+    margin: 5px auto;
+    width: 210px;
+    position: relative;
+}
+
+form p label {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+form p br {
+    display: none;
+}
+
+form fieldset p input,
+form fieldset p textarea {
+    display: block;
+    padding: 10px;
+    width: 186px;
+    margin: 0;
+}
+
+form fieldset p select {
+    width: 210px;
+    margin: 0;
+    padding: 10px;
+}
+
+form fieldset p label {
+    font-size: 10px;
+    color: #777;
+    width: 180px;
+    display: block;
+    margin: 0 5px 5px 6px;
+    padding: 10px;
+}
+
+label.error {
+    left:100px;
+    color: red;
+}
+

@@ -1,0 +1,10 @@
+<ivy-module version="2.0">
+    <info organisation="dk.lakeside" module="foosballranker"/>
+    <dependencies>
+        <dependency org="com.googlecode.objectify" name="objectify" rev="3.1"/>
+        <dependency org="org.freemarker" name="freemarker" rev="2.3.18"/>
+        <dependency org="com.google.code.gson" name="gson" rev="2.1"/>
+        <dependency org="junit" name="junit" rev="4.8.1"/>
+        <dependency org="org.mockito" name="mockito-all" rev="1.8.5"/>
+    </dependencies>
+</ivy-module>
