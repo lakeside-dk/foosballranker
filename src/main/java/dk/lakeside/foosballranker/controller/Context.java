@@ -35,8 +35,12 @@ import dk.lakeside.foosballranker.view.RedirectView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class Context {
+
+    private static final Logger log = Logger.getLogger(Context.class.getName());
+
     private Model model;
     private String pathInfo;
     private RequestSource request;
@@ -123,12 +127,15 @@ public class Context {
         RequestSource params = getParameters();
         String playerId = params.getParameter("id");
         String password = params.getParameter("password");
+//        log.info("playerId:"+playerId+" password:"+password);
+
         Player player = model.getPlayer(playerId);
         if (password == null) {
             throw new RuntimeException("Missing password");
         } else if (player == null) {
             throw new RuntimeException("Missing player");
         } else if (!password.equals(player.getPassword())) {
+//            log.info("player.id:"+player.getId()+" player.password:"+player.getPassword());
             return null;
         } else {
             session.login(playerId);

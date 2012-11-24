@@ -39,8 +39,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 public class BordfodboldServlet extends HttpServlet {
+
+    private static final Logger log = Logger.getLogger(BordfodboldServlet.class.getName());
 
     private Configuration cfg;
     private Model model;
@@ -89,6 +92,7 @@ public class BordfodboldServlet extends HttpServlet {
                 }
 
                 public void show(RedirectView redirectView) throws IOException {
+//                    log.info("redirecting to "+redirectView.getUrl());
                     res.sendRedirect(redirectView.getUrl());
                 }
 
