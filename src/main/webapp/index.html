@@ -1,58 +1,25 @@
-<!DOCTYPE html>
-<html lang="da">
+<!doctype html>
+<html lang="en" ng-app="myApp">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foosball Ranker</title>
-    <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery.infieldlabel.min.js"></script>
-    <script type="text/javascript" src="js/jquery.validate.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("label").inFieldLabels();
-            $("#loginform").validate();
-        });
-    </script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-<div id="container">
-    <div id="header">
-        <a href="/"><h1>Foosball Ranker</h1></a>
-        <div style="float:right;margin:2px;"><a class="small" href="mailto:sbv@lakeside.dk">Mail bugs here</a></div></div>
-    <div id="menu">
-    </div>
-    <div id="content">
-        <div class="center">Register your foosball matches <br/>compare your ranking with your friends!</div>
-        <form class="cmxform" id="loginform" accept-charset="utf-8" name="form1" method="post" action="app/login">
-            <fieldset style="border:none">
-                <p>
-                    <label for="field_id">Username</label><br />
-                    <input class="required" autocomplete="off" autofocus="autofocus" type="text" name="id" value="" id="field_id">
-                </p>
-                <p>
-                    <label for="field_password">Password</label><br />
-                    <input class="required" autocomplete="off" type="password" name="password" value="" id="field_password">
-                </p>
-                <p>
-                </p>
-            </fieldset>
-            <div class="center">
-                <input class="button submit" type="submit" value="Login"/>
-            </div>
-        </form>
 
-        <div class="center" style="clear:left;">
-            or
-        </div>
-        <div class="center">
-            <button class="button" onclick="window.location='app/player/new'">Create account</button>
-        </div>
-        <div class="center">Spread the word!</div>
-        <div style="width:100%" class="center"><div><img src="images/barcode.png"/></div></div>
-        <div class="center">Let your friends scan the code</div>
-    </div>
-    <div id="footer">Developed by <a href="http://lakeside.dk">Lakeside A/S</a><a style="float: right;" href="revisions.html">revision history</a></div>
-</div>
+<div ng-view></div>
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+-->
+<script src="lib/angular/angular.js"></script>
+<script src="js/app.js"></script>
+<script src="js/services.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/directives.js"></script>
 </body>
 </html>
