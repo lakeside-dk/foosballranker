@@ -2,16 +2,31 @@
 
 /* Controllers */
 
-
 function LoginCtrl($scope, $location) {
-    $scope.gotoView = function(url) {
+    $scope.show = function(url) {
         $location.path(url);
-//        $location.url = url;
     }
 }
 LoginCtrl.$inject = ['$scope', '$location'];
 
 
-function OpponentsCtrl() {
+function OpponentsCtrl($scope, $location) {
+    $scope.show = function(url) {
+        $location.path(url);
+    }
 }
-OpponentsCtrl.$inject = [];
+OpponentsCtrl.$inject = ['$scope', '$location'];
+
+function TournamentsCtrl($scope, $location) {
+    $scope.show = function(url) {
+        $location.path(url);
+    }
+}
+TournamentsCtrl.$inject = ['$scope', '$location'];
+
+function ChangelogCtrl($scope, $location) {
+    $scope.show = function(url) {
+        $location.path(url);
+    }
+}
+ChangelogCtrl.$inject = ['$scope', '$location'];

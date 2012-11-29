@@ -1,0 +1,105 @@
+<ng-include src="'partials/menu.html'"></ng-include>
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+
+            <legend>Changelog</legend>
+
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Changes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>7b</td>
+                    <td>New client - made with AngularJS and Bootstrap. Nice! :)</td>
+                </tr>
+                <tr>
+                    <td>6b</td>
+                    <td>field validation, minor bugfixes</td>
+                </tr>
+                <tr>
+                    <td>5b</td>
+                    <td>UI update, minor bugfixes</td>
+                </tr>
+                <tr>
+                    <td>4b</td>
+                    <td>Bugfix i oprettelse af performanceturnering</td>
+                </tr>
+                <tr>
+                    <td>3b</td>
+                    <td>Bugfix i brugeroprettelsen. QRCode tilføjet, bugfix i turneringsafslut</td>
+                </tr>
+                <tr>
+                    <td>2b</td>
+                    <td>Ny UI til oprettelse af kampe - skulle gerne gøre indtastning via mobil meget lettere.</td>
+                </tr>
+                <tr>
+                    <td>1b</td>
+                    <td>Kører nu på GAE.</td>
+                </tr>
+                <tr>
+                    <td>13a</td>
+                    <td>Stor omstrukturering. Systemet er nu mere spillerorienteret. Nu logger man ind via brugernavn.
+                        Ens password er det samme som det ligaens var før. En bruger kan nu tilføje modstandere og
+                        oprette turneringer samt kampe.
+                        For at komme med i turneringen skal man spille mod en spiller i turneringen og registrere kampen
+                        på turneringen.
+                        Der er 2 typer turneringer - ranking og performance - i ranking starter alle med en rating på
+                        1000 og vinderen
+                        er den med højeste ranking. i performance medregnes spillernes personlige rating - og vinderen
+                        er den der har
+                        "performet" bedst. Dvs. har spillet bedst ifht. forventet.
+                    </td>
+                </tr>
+                <tr>
+                    <td>12a</td>
+                    <td>Gui oprydning.</td>
+                </tr>
+                <tr>
+                    <td>11a</td>
+                    <td>Tilføjet csv udtræk af kampe med spiller rating.</td>
+                </tr>
+                <tr>
+                    <td>10a</td>
+                    <td>Tilføjet startrating i liga oprettelse.</td>
+                </tr>
+                <tr>
+                    <td>9a</td>
+                    <td>Nu med lidt statistik.</td>
+                </tr>
+                <tr>
+                    <td>8a</td>
+                    <td>Fjernet inaktive spillere fra chart og ranking. Encoding bug fixet. Ny ui til oprettelse af
+                        kamp. Nye url'er desværre!
+                    </td>
+                </tr>
+                <tr>
+                    <td>7a</td>
+                    <td>Opstilling feature. Genererer tilfældige 2vs2 hold. Nu kan man også slette en kamp.</td>
+                </tr>
+                <tr>
+                    <td>6a</td>
+                    <td>Nu med turneringer. En turnering kan oprettes og afsluttes. kampe der bliver spillet indenfor
+                        tidsrummet af
+                        turneringen tæller med i turneringens rating. Ens rank i turneringen beregnes pga. ens rating i
+                        ligaen - dvs. i en turnering
+                        starter alle spillere på 1000 men ens ændring i rating baseres på ens globale rank
+                    </td>
+                </tr>
+                <tr>
+                    <td>4a</td>
+                    <td>Forbedret graf i svg. Tilføjet changelog og email.</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<ng-include src="'partials/footer.html'"></ng-include>
