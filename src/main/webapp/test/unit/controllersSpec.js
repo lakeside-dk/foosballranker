@@ -1,31 +1,28 @@
 'use strict';
 
 /* jasmine specs for controllers go here */
+describe('Foosball Ranker controllers', function () {
 
-describe('LoginCtrl', function(){
-  var loginCtrl;
+    describe('OpponentsCtrl', function() {
+        var scope, rootScope, ctrl, location;
 
-  beforeEach(function(){
-    loginCtrl = new LoginCtrl();
-  });
+        beforeEach(inject(function($location, $rootScope, $controller) {
+            location = $location;
+            rootScope = $rootScope;
+            scope = $rootScope.$new();
+            ctrl = $controller(OpponentsCtrl, {$scope: scope});
+        }));
 
+        it('should change location when setting it via show function', function() {
+            location.path('/new/path');
+            rootScope.$apply();
+            expect(location.path()).toBe('/new/path');
 
-  it('should ....', function() {
-    //spec body
-  });
-});
+            // test whatever the service should do...
+            scope.show('/test');
+            expect(location.path()).toBe('/test');
 
+        });
+    });
 
-describe('OpponentsCtrl', function(){
-  var opponentsCtrl;
-
-
-  beforeEach(function(){
-    opponentsCtrl = new OpponentsCtrl();
-  });
-
-
-  it('should ....', function() {
-    //spec body
-  });
 });

@@ -39,8 +39,8 @@ describe('foosball ranker', function() {
     });
 
     it('should render /opponents when user navigates to /opponents', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 2/);
+      expect(element('[ng-view] legend:first').text()).
+        toMatch(/Opponents/);
     });
 
   });

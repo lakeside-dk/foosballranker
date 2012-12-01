@@ -9,7 +9,6 @@ function LoginCtrl($scope, $location) {
 }
 LoginCtrl.$inject = ['$scope', '$location'];
 
-
 function OpponentsCtrl($scope, $location) {
     $scope.show = function(url) {
         $location.path(url);
