@@ -9,12 +9,19 @@ function LoginCtrl($scope, $location) {
 }
 LoginCtrl.$inject = ['$scope', '$location'];
 
-function OpponentsCtrl($scope, $location) {
+function OpponentsCtrl($scope, $location, Opponent) {
+    $scope.index = 1;
+    $scope.opponents = Opponent.query();
+
     $scope.show = function(url) {
         $location.path(url);
-    }
+    };
+
+    $scope.getPosition = function() {
+        return $scope.index++;
+    };
 }
-OpponentsCtrl.$inject = ['$scope', '$location'];
+OpponentsCtrl.$inject = ['$scope', '$location', 'Opponent'];
 
 function TournamentsCtrl($scope, $location) {
     $scope.show = function(url) {
