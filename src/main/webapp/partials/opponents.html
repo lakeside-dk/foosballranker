@@ -20,28 +20,46 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
+                    <th>Username</th>
                     <th>Rating</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="opponent in opponents | orderBy:'rating':'desc'"><td>{{$index+1}}</td><td>{{opponent.name}}</td><td>{{opponent.rating}}</td></tr>
+                <tr ng-repeat="opponent in opponents | orderBy:'rating':'desc'"><td>{{$index+1}}</td><td>{{opponent.name}}</td><td>{{opponent.id}}</td><td>{{opponent.rating}}</td></tr>
                 </tbody>
             </table>
 
             <fieldset>
                 <div class="control-group">
-                    <legend>Add opponent</legend>
+                    <legend>Link to opponent with account</legend>
                     <label class="control-label" for="id_username">Username</label>
                     <div class="controls">
-                        <input name="username" maxlength="100" placeholder="Enter your username..." type="text" class="input-large" id="id_username" />
+                        <input name="username" maxlength="100" placeholder="Enter opponents username..." type="text" class="input-large" id="id_username" />
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
-                        <button class="btn btn-primary" ng-click="show('/opponents')">Add</button>
+                        <button class="btn btn-primary" ng-click="linkOpponent()">Link</button>
                     </div>
                 </div>
             </fieldset>
+
+<!-- TODO
+            <fieldset>
+                <div class="control-group">
+                    <legend>Add opponent without account</legend>
+                    <label class="control-label" for="id_username">Name</label>
+                    <div class="controls">
+                        <input name="name" maxlength="100" placeholder="Enter opponents name..." type="text" class="input-large" id="id_name" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary" ng-click="addOpponent()">Add</button>
+                    </div>
+                </div>
+            </fieldset>
+-->
         </div>
     </div>
 </div>

@@ -30,7 +30,9 @@ import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.InvalidPathException;
 import dk.lakeside.foosballranker.controller.SecureController;
 import dk.lakeside.foosballranker.domain.Player;
+import dk.lakeside.foosballranker.domain.PlayerWithRating;
 import dk.lakeside.foosballranker.view.HtmlView;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
@@ -46,6 +48,8 @@ public class PlayerModstanderController implements SecureController {
             return context.subContext().service(new PlayerModstanderAddController(player));
         } else if (context.hasRoot("html")) {
             return showModstander(context);
+        } else if (context.hasRoot("json")) {
+            return showModstanderData(context);
         } else if (context.hasRoot("bigsvgchart")) {
             return showChart(context, true);
         } else if (context.hasRoot("svgchart")) {
@@ -90,5 +94,11 @@ public class PlayerModstanderController implements SecureController {
         Map<String,Object> datamodel = new HashMap<String,Object>();
         datamodel.put("modstandere", playerAndCompetitorsWithRating);
         return new HtmlView("player-modstander-html.ftl", datamodel);
+    }
+
+    private View showModstanderData(Context context) {
+        Player player = PlayerContext.getPlayer(context);
+        List<PlayerWithRating> playerAndCompetitorsWithRating = context.getModel().getRankingOfPlayersOpponents(player);
+        return new JSonView(playerAndCompetitorsWithRating);
     }
 }

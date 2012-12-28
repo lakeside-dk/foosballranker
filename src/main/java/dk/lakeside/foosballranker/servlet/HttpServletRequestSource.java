@@ -51,7 +51,7 @@ public class HttpServletRequestSource implements RequestSource {
                 if (inputStream != null) {
                     bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                     char[] charBuffer = new char[128];
-                    int bytesRead = -1;
+                    int bytesRead;
                     while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
                         stringBuilder.append(charBuffer, 0, bytesRead);
                     }

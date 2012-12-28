@@ -7,12 +7,32 @@
 <div class="container">
     <div class="row">
         <div class="span12">
-            <legend>Please login</legend>
+<!--
             <div class="control-group">
                 <div class="controls">
                     <button class="btn btn-primary" ng-click="show('/opponents')">Login via Google</button>
                 </div>
             </div>
+-->
+            <fieldset>
+                <div class="control-group">
+                    <legend>Please login</legend>
+                    <label class="control-label" for="id_username">Username</label>
+                    <div class="controls">
+                        <input ng-model="userId" name="username" maxlength="100" placeholder="Enter username..." type="text" class="input-large" id="id_username" />
+                    </div>
+                    <label class="control-label" for="id_password">Password</label>
+                    <div class="controls">
+                        <input ng-model="password" name="password" maxlength="100" placeholder="Enter password..." type="password" class="input-large" id="id_password" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary" ng-click="login()">Login</button>
+                    </div>
+                </div>
+            </fieldset>
+
             <hr class="bs-docs-separator">
             <div>Spread the word!</div>
             <div><img src="img/barcode.png"/></div>

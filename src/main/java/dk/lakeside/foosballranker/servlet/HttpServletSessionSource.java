@@ -41,15 +41,11 @@ public class HttpServletSessionSource implements SessionSource {
         this.req = req;
     }
 
-    public void login(String playerId) {
+    public void setCurrentUser(String playerId) {
         getSession().setAttribute("playerid", playerId);
     }
 
-    public boolean isLoggedIn() {
-        return currentUser() != null;
-    }
-    
-    public String currentUser() {
+    public String getCurrentUser() {
         return (String) getSession().getAttribute("playerid");
     }
 

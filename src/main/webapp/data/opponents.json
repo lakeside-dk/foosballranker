@@ -1,14 +1,17 @@
 [
     {
         "name": "Anders Sørensen",
+        "id": "ADS",
         "rating": 1111
     },
     {
         "name": "Bent Bilstrup",
+        "id": "BTB",
         "rating": 827
     },
     {
         "name": "Christian Ernstsen",
+        "id": "che",
         "rating": 1233
     }
 ]

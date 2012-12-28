@@ -27,20 +27,16 @@ package dk.lakeside.foosballranker.controller.root;
 
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.Controller;
-import dk.lakeside.foosballranker.domain.Player;
-import dk.lakeside.foosballranker.view.RedirectView;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
 
+//app/login
 public class LoginController implements Controller {
 
     public View service(final Context context) throws IOException {
-        Player player = context.login();
-        if (player != null) {
-            return new RedirectView("player/"+player.getId()+"/turneringer/html");
-        } else {
-            return new RedirectView("../");
-        }
+        context.login();
+        return new JSonView("");
     }
 }

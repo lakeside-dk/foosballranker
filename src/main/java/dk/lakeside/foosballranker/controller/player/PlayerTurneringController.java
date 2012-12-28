@@ -28,9 +28,16 @@ package dk.lakeside.foosballranker.controller.player;
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.Controller;
 import dk.lakeside.foosballranker.controller.turnering.TurneringSingleController;
+import dk.lakeside.foosballranker.domain.Player;
+import dk.lakeside.foosballranker.domain.Tournament;
+import dk.lakeside.foosballranker.view.HtmlView;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PlayerTurneringController implements Controller {
 
@@ -39,11 +46,27 @@ public class PlayerTurneringController implements Controller {
         if (context.hasRoot("save")) {
             return context.subContext().service(new PlayerTurneringSaveController());
         } else if (context.hasRoot("html")) {
-            return context.subContext().service(new PlayerTurneringListController());
+            return showListInHtml(context);
+        } else if (context.hasRoot("json")) {
+            return showListInJSON(context);
         } else {
             Controller controller = new TurneringSingleController();
             return context.prepareSubContext(controller).service(controller);
         }
+    }
+
+    private View showListInHtml(Context context) throws IOException {
+        Map<String,List<Tournament>> datamodel = new HashMap<String,List<Tournament>>();
+        Player player = PlayerContext.getPlayer(context);
+        List<Tournament> turneringer = context.getModel().getTurneringer(player);
+        datamodel.put("turneringer", turneringer);
+        return new HtmlView("player-turnering-list-html.ftl", datamodel);
+    }
+
+    private View showListInJSON(Context context) throws IOException {
+        Player player = PlayerContext.getPlayer(context);
+        List<Tournament> turneringer = context.getModel().getTurneringer(player);
+        return new JSonView(turneringer);
     }
 
 }

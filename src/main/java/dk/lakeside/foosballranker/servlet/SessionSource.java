@@ -29,11 +29,9 @@ import dk.lakeside.foosballranker.domain.Model;
 
 public interface SessionSource {
 
-    void login(String playerId);
+    void setCurrentUser(String playerId);
 
-    boolean isLoggedIn();
-
-    String currentUser();
+    String getCurrentUser();
 
     boolean isAuthenticated(Model model);
 }

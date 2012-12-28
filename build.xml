@@ -46,13 +46,14 @@
     <enhance_war war="${war.dir}"/>
   </target>
 
-  <target name="enhance" depends="compile, dart2js"
+  <!--<target name="enhance" depends="compile, dart2js"-->
+  <target name="enhance" depends="compile"
           description="Enhance the classes after compilation">
     <enhance_war war="${war.dir}"/>
   </target>
 
-  <!--<target name="dart2js-disabled" description="Compile the dart code to js">-->
-  <target name="dart2js" description="Compile the dart code to js">
+  <target name="dart2js-disabled" description="Compile the dart code to js">
+  <!--<target name="dart2js" description="Compile the dart code to js">-->
       <mkdir dir="${war.dir}/js"/>
       <property name="dart2js" location="${dart.sdk}/bin/dart2js"/>
       <property name="file" location="src/main/dart/playerKamp.dart"/>

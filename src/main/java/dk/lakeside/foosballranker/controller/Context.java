@@ -26,12 +26,13 @@
 package dk.lakeside.foosballranker.controller;
 
 import dk.lakeside.foosballranker.JSonHelper;
+import dk.lakeside.foosballranker.controller.player.PlayerContext;
+import dk.lakeside.foosballranker.domain.Auth;
 import dk.lakeside.foosballranker.domain.Model;
 import dk.lakeside.foosballranker.domain.Player;
 import dk.lakeside.foosballranker.servlet.RequestSource;
 import dk.lakeside.foosballranker.servlet.SessionSource;
 import dk.lakeside.foosballranker.view.FailedAuthView;
-import dk.lakeside.foosballranker.view.RedirectView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
@@ -54,13 +55,19 @@ public class Context {
     }
     
     public View service(Controller controller) throws IOException {
-        if (controller instanceof SecureController && !this.getSession().isLoggedIn()) {
-            return new RedirectView("/index.html");
+        if (controller instanceof SecureController && !loggedIn()) {
+            return new FailedAuthView();
         } else if (controller instanceof SecureBasicAuthController && !this.getSession().isAuthenticated(model)) {
             return new FailedAuthView();
         } else {
             return controller.service(this);
         }
+    }
+
+    private boolean loggedIn() {
+        String playerId = getParameters().getParameter(PlayerContext.getParameterName());
+        String currentUser = this.getSession().getCurrentUser();
+        return currentUser != null && currentUser.equals(playerId);
     }
 
     public RequestSource getParameters() {
@@ -124,27 +131,24 @@ public class Context {
     }
 
     public Player login() {
-        RequestSource params = getParameters();
-        String playerId = params.getParameter("id");
-        String password = params.getParameter("password");
-//        log.info("playerId:"+playerId+" password:"+password);
+        Auth auth = getObjectFromPostRequest(Auth.class);
 
-        Player player = model.getPlayer(playerId);
-        if (password == null) {
+        Player player = model.getPlayer(auth.getPlayerId());
+        if (auth.getPassword() == null) {
             throw new RuntimeException("Missing password");
         } else if (player == null) {
             throw new RuntimeException("Missing player");
-        } else if (!password.equals(player.getPassword())) {
+        } else if (!auth.getPassword().equals(player.getPassword())) {
 //            log.info("player.id:"+player.getId()+" player.password:"+player.getPassword());
             return null;
         } else {
-            session.login(playerId);
+            session.setCurrentUser(auth.getPlayerId());
             return player;
         }
     }
     
     public String currentUser() {
-        return getSession().currentUser();
+        return getSession().getCurrentUser();
     }
 
 

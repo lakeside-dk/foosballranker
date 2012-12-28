@@ -116,6 +116,19 @@ public class Model implements Serializable {
         return playersRating;
     }
 
+    public List<PlayerWithRating> getRankingOfPlayersOpponents(Player player) {
+        Pair<List<Player>, List<List<Integer>>> chartData = generatePlayerRatingChartData(player);
+        List<PlayerWithRating> playersRating = new ArrayList<PlayerWithRating>();
+        if(chartData.getFirst().size() > 0) {
+            List<Integer> newestRatingList = chartData.getSecond().get(chartData.getSecond().size()-1);
+            for (int i = 0; i < chartData.getFirst().size(); i++) {
+                Player p = chartData.getFirst().get(i);
+                playersRating.add(new PlayerWithRating(p, newestRatingList.get(i)));
+            }
+        }
+        return playersRating;
+    }
+
     public List<Player> getCompetitors(Player player) {
         Iterable<PlayerRelation> q = playerRelationRepository.findByPlayer(player.getId());
         List<Player> players = new ArrayList<Player>();

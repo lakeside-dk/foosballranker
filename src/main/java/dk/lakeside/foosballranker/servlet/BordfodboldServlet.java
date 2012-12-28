@@ -97,8 +97,6 @@ public class BordfodboldServlet extends HttpServlet {
                 }
 
                 public void show(FailedAuthView failedAuthView) throws IOException {
-                    String s = "Basic realm=\"Login Test Servlet Users\"";
-                    res.setHeader("WWW-Authenticate", s);
                     res.setStatus(401);
                 }
 

@@ -45,8 +45,9 @@ public class Match {
     int score1;
     @Expose
     int score2;
+    //TODO fix createdBy - should always be set
     @Expose
-    String createdById;
+    String createdById = "";
     @Expose
     Long turneringId;
     @Expose
@@ -57,23 +58,7 @@ public class Match {
     Match() {
     }
 
-    public Match(String createdById, Long turneringId, int score1, int score2, String attacker1Id, String defender1Id, String attacker2Id, String defender2Id) {
-        this(score1, score2, attacker1Id, defender1Id, attacker2Id, defender2Id);
-        this.turneringId = turneringId;
-        this.createdById = createdById;
-    }
-
-    public Match(int score1, int score2, String attacker1Id, String defender1Id, String attacker2Id, String defender2Id) {
-        this.score1 = score1;
-        this.score2 = score2;
-        playerIds = new ArrayList<String>(4);
-        playerIds.add(defender1Id);
-        playerIds.add(attacker1Id);
-        playerIds.add(defender2Id);
-        playerIds.add(attacker2Id);
-    }
-
-    public Match(int score1, int score2, String player1Id, String player2Id) {
+    private Match(int score1, int score2, String player1Id, String player2Id) {
         this.score1 = score1;
         this.score2 = score2;
         playerIds = new ArrayList<String>(2);

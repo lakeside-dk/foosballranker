@@ -4,12 +4,49 @@
     <div class="row">
         <div class="span12">
 
-            <div class="btn-group" style="margin-top: 10px;">
-                <button class="btn" ng-click="show('/opponents')">Opponents</button>
+            <div class="btn-toolbar">
+                <div class="btn-group" style="margin-top: 10px;">
+                    <button class="btn tournamentbuttonid" ng-click="show('/opponents')">Opponents</button>
+                </div>
             </div>
 
             <legend>Tournaments</legend>
 
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <!--<th>Status</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tournament in tournaments | orderBy:'name':'desc'"><td>{{$index+1}}</td><td>{{tournament.name}}</td><td>{{tournament.type}}</td><!--<td>{{tournament.status}}</td>--></tr>
+                </tbody>
+            </table>
+
+            <fieldset>
+                <div class="control-group">
+                    <legend>Add tournament</legend>
+                    <label class="control-label" for="id_name">Name</label>
+                    <div class="controls">
+                        <input name="name" ng-model="name" maxlength="100" placeholder="Enter name of tournament..." type="text" class="input-large" id="id_name" />
+                    </div>
+                    <label class="control-label" for="id_type">Type</label>
+                    <div class="controls">
+                        <select name="type" ng-model="type" id="id_type">
+                            <option value="ranking">Highest ranking wins</option>
+                            <option value="performance">Best performance wins</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary" ng-click="show('/tournaments')">Add</button>
+                    </div>
+                </div>
+            </fieldset>
         </div>
     </div>
 </div>
