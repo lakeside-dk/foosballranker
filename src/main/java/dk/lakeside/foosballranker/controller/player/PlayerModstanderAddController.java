@@ -29,7 +29,7 @@ import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.servlet.RequestSource;
 import dk.lakeside.foosballranker.controller.SecureController;
 import dk.lakeside.foosballranker.domain.Player;
-import dk.lakeside.foosballranker.view.RedirectView;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
@@ -55,6 +55,6 @@ public class PlayerModstanderAddController implements SecureController {
             System.out.println("modstander added");
         }
 
-        return new RedirectView("html");
+        return new JSonView("");
     }
 }

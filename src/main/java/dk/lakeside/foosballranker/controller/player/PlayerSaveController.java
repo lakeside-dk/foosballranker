@@ -29,7 +29,7 @@ import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.Controller;
 import dk.lakeside.foosballranker.servlet.RequestSource;
 import dk.lakeside.foosballranker.domain.Player;
-import dk.lakeside.foosballranker.view.RedirectView;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
@@ -53,7 +53,6 @@ public class PlayerSaveController implements Controller {
 
         System.out.println("player added");
 
-        // goto frontpage
-        return new RedirectView("..");
+        return new JSonView("");
     }
 }

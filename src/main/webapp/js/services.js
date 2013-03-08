@@ -1,39 +1,51 @@
 'use strict';
 
 /* Services */
-angular.module('myApp.services', ['ngResource','ngCookies']).
+angular.module('myApp.services', ['ngResource', 'ngCookies']).
 
-    service('auth', function Auth($http, $cookieStore, authService) {
+    service('auth',function Auth($http, $cookieStore, authService) {
 
         var self = this;
 
-        self.userId = $cookieStore.get('userId');
+        var cookieName = 'fr-settings-1';
 
-        self.login = function(userId, password) {
-            $cookieStore.put('userId', userId);
+        self.userId = $cookieStore.get(cookieName);
+
+        self.login = function (userId, password) {
+            $cookieStore.put(cookieName, userId);
             self.userId = userId;
-            $http.post('app/login',{"playerId": userId, "password": password}).success(function() {
-//                Player.get({userId:})
+            $http.post('app/login', {"playerId": userId, "password": password})
+                .success(function () {
+                alert("login succes");
                 authService.loginConfirmed();
-//                alert('success');
+            }).error(function () {
+                //TODO show error
+            });
+        }
+
+        self.logout = function (callback) {
+            $http.post('app/logout', {"playerId": self.userId})
+                .success(function () {
+                    $cookieStore.put(cookieName, null);
+                    self.userId = null;
+                    callback();
+            }).error(function () {
+                //TODO show error
             });
         }
     }).
-    factory('Player', function ($resource) {
-//        return $resource('data/opponents.json', {}, {
-        return $resource('app/player/:userId/modstandere/json', {}, {
-            query:{method:'GET', params:{}, isArray:true}
-        });
+    factory('Player',function ($resource) {
+        return $resource('app/player/:userId', {}, {});
     }).
-    factory('Opponent', function ($resource) {
+    factory('Opponent',function ($resource) {
 //        return $resource('data/opponents.json', {}, {
         return $resource('app/player/:userId/modstandere/json', {}, {
-            query:{method:'GET', params:{}, isArray:true}
+            query: {method: 'GET', params: {}, isArray: true}
         });
     }).
     factory('Tournament', function ($resource) {
 //        return $resource('data/tournaments.json', {}, {
-        return $resource('app/player/:userId/turneringer/json', {}, {
-            query:{method:'GET', params:{}, isArray:true}
+        return $resource('app/player/:userId/turneringer/:tournamentId', {}, {
+            query: {method: 'GET', params: {}, isArray: true}
         });
     });

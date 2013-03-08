@@ -47,7 +47,7 @@ public class PlayerTurneringController implements Controller {
             return context.subContext().service(new PlayerTurneringSaveController());
         } else if (context.hasRoot("html")) {
             return showListInHtml(context);
-        } else if (context.hasRoot("json")) {
+        } else if (context.hasRoot("") ) {
             return showListInJSON(context);
         } else {
             Controller controller = new TurneringSingleController();

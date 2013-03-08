@@ -13,9 +13,9 @@
                 </div>
             </div>
 
-            <legend>Opponents</legend>
+            <legend>Ranking</legend>
 
-            <table class="table table-condensed">
+            <table id="table" class="table table-condensed">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -34,12 +34,12 @@
                     <legend>Link to opponent with account</legend>
                     <label class="control-label" for="id_username">Username</label>
                     <div class="controls">
-                        <input name="username" maxlength="100" placeholder="Enter opponents username..." type="text" class="input-large" id="id_username" />
+                        <input ng-model="userId" name="username" maxlength="100" placeholder="Enter opponents username..." type="text" class="input-large" id="id_username" />
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
-                        <button class="btn btn-primary" ng-click="linkOpponent()">Link</button>
+                        <button id="id_linkaccount" class="btn btn-primary" ng-click="linkOpponent()">Link</button>
                     </div>
                 </div>
             </fieldset>

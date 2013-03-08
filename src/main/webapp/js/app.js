@@ -18,6 +18,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
 
                 scope.$on('event:auth-loginRequired', function() {
                     locationBeforeLogin = $location.path();
+//                    alert("login required "+locationBeforeLogin);
 //                    alert("login required "+ $location.path());
                     $location.path('/login');
                     // remember page
@@ -44,8 +45,9 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: LoginCtrl});
     $routeProvider.when('/opponents', {templateUrl: 'partials/opponents.html', controller: OpponentsCtrl});
-    $routeProvider.when('/opponents/rankingchart', {templateUrl: 'partials/opponents/rankingchart.html', controller: OpponentsCtrl});
+    $routeProvider.when('/opponents/rankingchart', {templateUrl: 'partials/opponents/rankingchart.html', controller: OpponentsChartCtrl});
     $routeProvider.when('/tournaments', {templateUrl: 'partials/tournaments.html', controller: TournamentsCtrl});
+    $routeProvider.when('/tournaments/:tournamentId', {templateUrl: 'partials/tournament.html', controller: TournamentCtrl});
     $routeProvider.when('/changelog', {templateUrl: 'partials/changelog.html', controller: ChangelogCtrl});
     $routeProvider.otherwise({redirectTo: '/opponents'});
   }]).

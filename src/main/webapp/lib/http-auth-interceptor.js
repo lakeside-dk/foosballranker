@@ -41,7 +41,8 @@ angular.module('http-auth-interceptor', [])
       return {
         loginConfirmed: function() {
           $rootScope.$broadcast('event:auth-loginConfirmed');
-          retryAll();
+            // not needed - we jump pages instead which itself fetch again from the server
+//          retryAll();
         }
       }
     }]

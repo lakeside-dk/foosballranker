@@ -22,7 +22,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="tournament in tournaments | orderBy:'name':'desc'"><td>{{$index+1}}</td><td>{{tournament.name}}</td><td>{{tournament.type}}</td><!--<td>{{tournament.status}}</td>--></tr>
+                <tr ng-repeat="tournament in tournaments | orderBy:'name':'desc'">
+                    <td>{{$index+1}}</td>
+                    <td><button class="btn btn-primary" ng-click="show('/tournaments/'+tournament.id)">{{tournament.name}}</button></td>
+                    <td>{{tournament.type}}</td><!--<td>{{tournament.status}}</td>-->
+                </tr>
                 </tbody>
             </table>
 

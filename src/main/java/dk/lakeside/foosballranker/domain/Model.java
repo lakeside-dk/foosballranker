@@ -104,7 +104,7 @@ public class Model implements Serializable {
     }
 
     public List<Pair<String,String>> getPlayerAndCompetitorsWithRating(Player player) {
-        Pair<List<Player>, List<List<Integer>>> chartData = generatePlayerRatingChartData(player);
+        Pair<List<Player>, List<List<Integer>>> chartData = generatePlayerRatingChartData(player, true);
         List<Pair<String,String>> playersRating = new ArrayList<Pair<String, String>>();
         if(chartData.getFirst().size() > 0) {
             List<Integer> newestRatingList = chartData.getSecond().get(chartData.getSecond().size()-1);
@@ -117,7 +117,7 @@ public class Model implements Serializable {
     }
 
     public List<PlayerWithRating> getRankingOfPlayersOpponents(Player player) {
-        Pair<List<Player>, List<List<Integer>>> chartData = generatePlayerRatingChartData(player);
+        Pair<List<Player>, List<List<Integer>>> chartData = generatePlayerRatingChartData(player, false);
         List<PlayerWithRating> playersRating = new ArrayList<PlayerWithRating>();
         if(chartData.getFirst().size() > 0) {
             List<Integer> newestRatingList = chartData.getSecond().get(chartData.getSecond().size()-1);
@@ -507,8 +507,9 @@ public class Model implements Serializable {
      * @return pair of playerRepository and matrix of playerRepository ratings.
      * The matrix is a list of kampe where each kamp contains all playerRepository ratings after the kamp
      * @param player player
+     * @param removePlayersNotPlayedYet
      */
-    public Pair<List<Player>,List<List<Integer>>> generatePlayerRatingChartData(Player player) {
+    public Pair<List<Player>,List<List<Integer>>> generatePlayerRatingChartData(Player player, boolean removePlayersNotPlayedYet) {
 
         // this player's competitors
         List<Player> playersInChart = getPlayerAndCompetitors(player);
@@ -536,6 +537,8 @@ public class Model implements Serializable {
             if (index != -1) {
                 Player playerWithRating = players.get(index);
                 ratings.add(playerWithRating.getRating());
+            } else {
+                ratings.add(p.getStartRating());
             }
         }
         chartData.getSecond().add(ratings);
@@ -550,24 +553,24 @@ public class Model implements Serializable {
                 if (index != -1) {
                     Player playerWithRating = players.get(index);
                     ratings.add(playerWithRating.getRating());
+                } else {
+                    ratings.add(p.getStartRating());
                 }
             }
             chartData.getSecond().add(ratings);
         }
 
         // remove playerRepository not playing
-        for (Player p : playersInChart) {
-            int idx = players.indexOf(p);
-            Player playerWithRating = idx != -1 ? players.get(idx) : null;
-            if (playerWithRating == null || (!player.getId().equals(playerWithRating.getId()) && playerWithRating.getAntalKampe() == 0)) {
-                int index = chartData.getFirst().indexOf(p);
-                chartData.getFirst().remove(index);
-//                for (List<Integer> ratingsAfterKamp : chartData.getSecond()) {
-//                    ratingsAfterKamp.remove(index);
-//                }
+        if(removePlayersNotPlayedYet) {
+            for (Player p : playersInChart) {
+                int idx = players.indexOf(p);
+                Player playerWithRating = idx != -1 ? players.get(idx) : null;
+                if (playerWithRating == null || (!player.getId().equals(playerWithRating.getId()) && playerWithRating.getAntalKampe() == 0)) {
+                    int index = chartData.getFirst().indexOf(p);
+                    chartData.getFirst().remove(index);
+                }
             }
         }
-
         return chartData;
     }
 

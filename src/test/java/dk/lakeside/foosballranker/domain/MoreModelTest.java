@@ -57,7 +57,7 @@ public class MoreModelTest {
                 .addPlayer()
                 .addSingleMatch(10, 0)
                 .addSingleMatch(10, 0);
-        Pair<List<Player>,List<List<Integer>>> chartData = model.generatePlayerRatingChartData(model.getPlayer("player0"));
+        Pair<List<Player>,List<List<Integer>>> chartData = model.generatePlayerRatingChartData(model.getPlayer("player0"), true);
         assertEquals(2, chartData.getFirst().size());
     }
 
@@ -90,7 +90,7 @@ public class MoreModelTest {
     public void whenShowPlayerChartWithNoMatchesThenShowEmptyChartWithOnlyThePlayersStartrating() {
         DataBuilder.instance(model)
                 .addPlayer();
-        Pair<List<Player>, List<List<Integer>>> chartData = model.generatePlayerRatingChartData(model.getPlayer("player0"));
+        Pair<List<Player>, List<List<Integer>>> chartData = model.generatePlayerRatingChartData(model.getPlayer("player0"), true);
         // one player
         assertEquals(1, chartData.getFirst().size());
         // zero matches - only startrating

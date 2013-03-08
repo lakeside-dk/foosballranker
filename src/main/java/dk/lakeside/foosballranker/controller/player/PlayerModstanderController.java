@@ -36,6 +36,7 @@ import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,13 +55,80 @@ public class PlayerModstanderController implements SecureController {
             return showChart(context, true);
         } else if (context.hasRoot("svgchart")) {
             return showChart(context, false);
+        } else if (context.hasRoot("chart")) {
+            return showChartData(context);
         }
         throw new InvalidPathException(context);
     }
 
+    protected View showChartData(Context context) {
+        Player player = PlayerContext.getPlayer(context);
+        final Pair<List<Player>,List<List<Integer>>> playerRatingsData = context.getModel().generatePlayerRatingChartData(player, true);
+
+        Map<String, Object> content = new HashMap<String, Object>();
+        List<List<Object>> data = new ArrayList<List<Object>>();
+        List<Object> row = new ArrayList<Object>();
+        row.add("Match");
+        for (Player chartedPlayer : playerRatingsData.getFirst()) {
+            row.add(chartedPlayer.getId());
+        }
+        data.add(row);
+
+        int i = 0;
+        for (List<Integer> ratingsAfterKamp : playerRatingsData.getSecond()) {
+            row = new ArrayList<Object>();
+            row.add("" + i++);
+            for (Integer rating : ratingsAfterKamp) {
+                row.add(rating);
+            }
+            data.add(row);
+        }
+
+        content.put("data", data);
+        content.put("baseline", 1000);
+        content.put("title", "Players ranking");
+
+        return new JSonView(content);
+/*
+        var dataArray = [
+        ['Year', 'Zales', 'Expenses'],
+        ['2004',  1000,      400],
+        ['2005',  1170,      460],
+        ['2006',  660,       1120],
+        ['2007',  1030,      540]
+        ];
+*/
+
+
+/*
+        data.append("data.addColumn('string', 'x');\n");
+
+        for (Player chartedPlayer : playerRatingsData.getFirst()) {
+            data.append("data.addColumn('number', '" + chartedPlayer.getId() + "');\n");
+        }
+        int i = 0;
+        for (List<Integer> ratingsAfterKamp : playerRatingsData.getSecond()) {
+            data.append("data.addRow([\"" + i++ + "\"");
+            for (Integer integer : ratingsAfterKamp) {
+                data.append(", ").append(integer);
+            }
+            data.append("]);\n");
+        }
+
+        datamodel.put("titel", "Players ranking");
+        datamodel.put("data", data.toString());
+        datamodel.put("baseline", 1000);
+        if(fullscreen) {
+            return new HtmlView("bigsvgchart.ftl", datamodel);
+        } else {
+            return new HtmlView("svgchart.ftl", datamodel);
+        }
+*/
+    }
+
     protected View showChart(Context context, boolean fullscreen) {
         Player player = PlayerContext.getPlayer(context);
-        final Pair<List<Player>,List<List<Integer>>> playerRatingsData = context.getModel().generatePlayerRatingChartData(player);
+        final Pair<List<Player>,List<List<Integer>>> playerRatingsData = context.getModel().generatePlayerRatingChartData(player, true);
         // Add the values in the datamodel
         Map<String,Object> datamodel = new HashMap<String,Object>();
         StringBuilder data = new StringBuilder();
