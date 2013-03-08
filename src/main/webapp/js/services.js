@@ -16,7 +16,7 @@ angular.module('myApp.services', ['ngResource', 'ngCookies']).
             self.userId = userId;
             $http.post('app/login', {"playerId": userId, "password": password})
                 .success(function () {
-                alert("login succes");
+//                alert("login succes");
                 authService.loginConfirmed();
             }).error(function () {
                 //TODO show error

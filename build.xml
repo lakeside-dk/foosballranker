@@ -23,6 +23,16 @@
         <include name="*.ico"/>
       </fileset>
     </copy>
+    <copy todir="${war.dir}/partials">
+      <fileset dir="src/main/webapp/partials">
+        <include name="**"/>
+      </fileset>
+    </copy>
+    <copy todir="${war.dir}/test">
+      <fileset dir="src/main/webapp/test">
+        <include name="**"/>
+      </fileset>
+    </copy>
     <copy todir="${war.dir}/images">
       <fileset dir="src/main/webapp/images">
         <include name="**"/>
@@ -30,6 +40,11 @@
     </copy>
     <copy todir="${war.dir}/js">
       <fileset dir="src/main/webapp/js">
+        <include name="**"/>
+      </fileset>
+    </copy>
+    <copy todir="${war.dir}/lib">
+      <fileset dir="src/main/webapp/lib">
         <include name="**"/>
       </fileset>
     </copy>
