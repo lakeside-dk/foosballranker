@@ -161,4 +161,22 @@ describe('foosball ranker', function () {
             expect(element('[ng-view] #table tr').count()).toEqual(3);
         });
     });
+
+    describe('ranking tournament', function () {
+
+        beforeEach(function () {
+            browser().navigateTo('#/login');
+            input('userId').enter('simon'+randomNum);
+            input('password').enter('simon');
+            element('#id_login').click();
+            element('.tournamentbuttonid').click();
+            element('[ng-view] #table tr:nth-child(1) td:nth-child(2) button').click();
+        });
+
+        it('should render /tournament when user navigates to /tournament', function () {
+//            pause();
+            expect(element('[ng-view] legend:first').text()).
+                toMatch('Ranking');
+        });
+    });
 });
