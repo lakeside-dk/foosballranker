@@ -106,7 +106,7 @@ function OpponentsChartCtrl($scope, $location, Opponent, auth, $http) {
 OpponentsChartCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
 
 
-function TournamentsCtrl($scope, $location, Tournament, auth) {
+function TournamentsCtrl($scope, $location, Tournament, auth, $http) {
     $scope.index = 1;
     $scope.tournaments = Tournament.query({'userId':auth.userId});
     $scope.type = 'ranking';
@@ -120,8 +120,18 @@ function TournamentsCtrl($scope, $location, Tournament, auth) {
             $location.path('#/login');
         });
     };
+
+    $scope.createTournament = function() {
+        $http.post('app/player/'+auth.userId+'/turneringer/save?type='+$scope.type+'&name='+$scope.name, {})
+            .success(function () {
+                $scope.tournaments = Tournament.query({'userId':auth.userId});
+            }).error(function () {
+                //TODO show error
+            });
+    };
+
 }
-TournamentsCtrl.$inject = ['$scope', '$location', 'Tournament', 'auth'];
+TournamentsCtrl.$inject = ['$scope', '$location', 'Tournament', 'auth', '$http'];
 
 
 function TournamentCtrl($scope, $routeParams, $location, Tournament, auth) {

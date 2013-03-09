@@ -62,7 +62,10 @@ public class PlayerModstanderController implements SecureController {
     }
 
     protected View showChartData(Context context) {
+        Map<String, Object> content = new HashMap<String, Object>();
         Player player = PlayerContext.getPlayer(context);
+        List<List<Object>> playerRatingsData = context.getModel().generatePlayerRatingChartData2(player);
+/*
         final Pair<List<Player>,List<List<Integer>>> playerRatingsData = context.getModel().generatePlayerRatingChartData(player, true);
 
         Map<String, Object> content = new HashMap<String, Object>();
@@ -83,8 +86,9 @@ public class PlayerModstanderController implements SecureController {
             }
             data.add(row);
         }
+*/
 
-        content.put("data", data);
+        content.put("data", playerRatingsData);
         content.put("baseline", 1000);
         content.put("title", "Players ranking");
 

@@ -25,6 +25,7 @@
  */
 package dk.lakeside.foosballranker.domain;
 
+import dk.lakeside.foosballranker.JSonHelper;
 import dk.lakeside.foosballranker.Pair;
 import dk.lakeside.foosballranker.repository.mock.*;
 import org.junit.Before;
@@ -62,6 +63,40 @@ public class MoreModelTest {
     }
 
     @Test
+    public void whenGenerateChartDataThenVerifyJsonFormat() {
+        DataBuilder.instance(model)
+                .addPlayer()
+                .addRankingTournament()
+                .addPlayer()
+                .addSingleMatch(10, 0)
+                .addSingleMatch(10, 0);
+        List<List<Object>> chartData = model.generatePlayerRatingChartData2(model.getPlayer("player0"));
+        String data = JSonHelper.toJSon(chartData);
+        assertEquals("[\n" +
+                "  [\n" +
+                "    \"Match\",\n" +
+                "    \"player0\",\n" +
+                "    \"player1\"\n" +
+                "  ],\n" +
+                "  [\n" +
+                "    0,\n" +
+                "    1000,\n" +
+                "    1000\n" +
+                "  ],\n" +
+                "  [\n" +
+                "    1,\n" +
+                "    1025,\n" +
+                "    975\n" +
+                "  ],\n" +
+                "  [\n" +
+                "    2,\n" +
+                "    1046,\n" +
+                "    954\n" +
+                "  ]\n" +
+                "]", data);
+    }
+
+    @Test
     public void whenCreateTournamentThenCheckCorrectStartRating() {
         DataBuilder.instance(model)
                 .addPlayer()
@@ -71,6 +106,16 @@ public class MoreModelTest {
                 .addPerformanceTournament()
                 .addSingleMatch(1L, 10, 0);     // p1 1037, p2 956
         assertEquals(1025, model.tournamentRelationsRepository.findByTournamentAndPlayer(1L, "player0").getStartRating());
+    }
+
+    @Test
+    public void whenCreatePerformanceTournamentThenCheckCorrectStartRating() {
+        DataBuilder.instance(model)
+                .addPlayer()
+                .addPlayer()
+                .addPerformanceTournament()
+                .addSingleMatch(0L, 10, 0);
+        assertEquals(1000, model.tournamentRelationsRepository.findByTournamentAndPlayer(0L, "player0").getStartRating());
     }
 
     @Test

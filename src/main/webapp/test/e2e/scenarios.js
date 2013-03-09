@@ -14,7 +14,6 @@ describe('foosball ranker', function () {
         expect(browser().location().url()).toBe("/opponents");
     });
 
-
     describe('login', function () {
 
         beforeEach(function () {
@@ -68,9 +67,7 @@ describe('foosball ranker', function () {
 //            pause();
             expect(browser().location().url()).toBe('/opponents');
         });
-
     });
-
 
     describe('opponents', function () {
 
@@ -104,6 +101,64 @@ describe('foosball ranker', function () {
 //            pause();
             expect(element('[ng-view] #table tr').count()).toEqual(3);
         });
+    });
 
+    describe('chart', function () {
+
+        beforeEach(function () {
+            browser().navigateTo('#/login');
+            input('userId').enter('simon'+randomNum);
+            input('password').enter('simon');
+            element('#id_login').click();
+            element('.chartbuttonid').click();
+//            pause();
+        });
+
+        it('should render /tournaments when button Tournaments is clicked', function () {
+            element('.tournamentbuttonid').click();
+            expect(browser().location().url()).toBe('/tournaments');
+        });
+
+        it('should render /opponents when button Opponents is clicked', function () {
+            element('.opponentbuttonid').click();
+            expect(browser().location().url()).toBe('/opponents');
+        });
+    });
+
+    describe('tournaments', function () {
+
+        beforeEach(function () {
+            browser().navigateTo('#/login');
+            input('userId').enter('simon'+randomNum);
+            input('password').enter('simon');
+            element('#id_login').click();
+            element('.tournamentbuttonid').click();
+        });
+
+        it('should render /tournaments when user navigates to /tournaments', function () {
+//            pause();
+            expect(element('[ng-view] legend:first').text()).
+                toMatch('Tournaments');
+        });
+
+        it('should render /opponents when button Opponents is clicked', function () {
+            element('.opponentbuttonid').click();
+            expect(browser().location().url()).toBe('/opponents');
+        });
+
+        it('should show new tournaments when name and type is entered and Add is clicked', function () {
+            expect(element('[ng-view] #table tr').count()).toEqual(1);
+            input('name').enter('rankingtest'+randomNum);
+            select('type').option('ranking');
+            element('#id_createtournament').click();
+//            pause();
+            expect(element('[ng-view] #table tr').count()).toEqual(2);
+
+            input('name').enter('perftest'+randomNum);
+            select('type').option('performance');
+            element('#id_createtournament').click();
+//            pause();
+            expect(element('[ng-view] #table tr').count()).toEqual(3);
+        });
     });
 });

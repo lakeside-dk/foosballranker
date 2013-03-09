@@ -243,6 +243,9 @@ public class Model implements Serializable {
 
     public int getPlayerRating(Player player, Date before) {
         List<Match> kampe = getKampe(player);
+        if(kampe.isEmpty()) {
+            return player.getStartRating();
+        }
 
         ModelHelper.sortKampeOldestFirst(kampe);
 //        List<Player> playerRepository = getPlayerAndCompetitors(player);
@@ -501,6 +504,89 @@ public class Model implements Serializable {
         }
 
         return chartData;
+    }
+
+    public List<List<Object>> generatePlayerRatingChartData2(Player player) {
+
+        // this player's competitors
+        List<Player> playersInChart = getPlayerAndCompetitors(player);
+        // these players matches
+        List<Match> kampe = getKampe(playersInChart);
+        // the playerRepository that gets calculated rating
+        List<Player> players = getPlayers(kampe);
+        if(players.isEmpty()) players.add(player);
+
+        ModelHelper.sortKampeOldestFirst(kampe);
+
+        // every player must be cleared - move rating from player!
+        clearAllPlayersRatingAndAntalKampe(players);
+
+        StringBuilder sb = new StringBuilder("[['Match'");
+        List<List<Object>> data = new ArrayList<List<Object>>();
+        List<Object> row = new ArrayList<Object>();
+
+        // add playerRepository
+        row.add("Match");
+        Pair<List<Player>,List<List<Integer>>> chartData = new Pair<List<Player>,List<List<Integer>>>(new ArrayList<Player>(), new ArrayList<List<Integer>>());
+        for (Player p : playersInChart) {
+            sb.append(",'").append(p.getId()).append("'");
+            chartData.getFirst().add(p);
+            row.add(p.getId());
+        }
+        sb.append("],");
+        data.add(row);
+
+        sb.append("['0'");
+        row = new ArrayList<Object>();
+        row.add(0);
+        // add initial ratings
+        List<Integer> ratings = new ArrayList<Integer>();
+        for (Player p : playersInChart) {
+            int index = players.indexOf(p);
+            if (index != -1) {
+                Player playerWithRating = players.get(index);
+                ratings.add(playerWithRating.getRating());
+                sb.append(",").append(playerWithRating.getRating());
+                row.add(playerWithRating.getRating());
+            } else {
+                ratings.add(p.getStartRating());
+                sb.append(",").append(p.getStartRating());
+                row.add(p.getStartRating());
+            }
+        }
+        chartData.getSecond().add(ratings);
+        sb.append("],");
+        data.add(row);
+
+        // update ratings
+        int i = 1;
+        for (Match match : kampe) {
+            sb.append("['").append(i).append("'");
+            row = new ArrayList<Object>();
+            row.add(i++);
+            updatePlayers(players, match);
+            updateRating(players, match, false);
+            ratings = new ArrayList<Integer>();
+            for (Player p : playersInChart) {
+                int index = players.indexOf(p);
+                if (index != -1) {
+                    Player playerWithRating = players.get(index);
+                    ratings.add(playerWithRating.getRating());
+                    sb.append(",").append(playerWithRating.getRating());
+                    row.add(playerWithRating.getRating());
+                } else {
+                    ratings.add(p.getStartRating());
+                    sb.append(",").append(p.getStartRating());
+                    row.add(p.getStartRating());
+                }
+            }
+            chartData.getSecond().add(ratings);
+            sb.append("]");
+            data.add(row);
+        }
+        sb.append("]");
+
+        return data;
     }
 
     /**

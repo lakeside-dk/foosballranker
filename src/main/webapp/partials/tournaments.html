@@ -6,13 +6,13 @@
 
             <div class="btn-toolbar">
                 <div class="btn-group" style="margin-top: 10px;">
-                    <button class="btn tournamentbuttonid" ng-click="show('/opponents')">Opponents</button>
+                    <button class="btn opponentbuttonid" ng-click="show('/opponents')">Opponents</button>
                 </div>
             </div>
 
             <legend>Tournaments</legend>
 
-            <table class="table table-condensed">
+            <table id="table" class="table table-condensed">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="control-group">
                     <div class="controls">
-                        <button class="btn btn-primary" ng-click="show('/tournaments')">Add</button>
+                        <button  id="id_createtournament" class="btn btn-primary" ng-click="createTournament()">Add</button>
                     </div>
                 </div>
             </fieldset>
