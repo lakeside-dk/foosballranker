@@ -47,7 +47,8 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/opponents', {templateUrl: 'partials/opponents.html', controller: OpponentsCtrl});
     $routeProvider.when('/opponents/rankingchart', {templateUrl: 'partials/opponents/rankingchart.html', controller: OpponentsChartCtrl});
     $routeProvider.when('/tournaments', {templateUrl: 'partials/tournaments.html', controller: TournamentsCtrl});
-    $routeProvider.when('/tournaments/:tournamentId', {templateUrl: 'partials/tournament.html', controller: TournamentCtrl});
+    $routeProvider.when('/tournaments/:tournamentId', {templateUrl: 'partials/tournaments/tournament.html', controller: TournamentCtrl});
+    $routeProvider.when('/tournaments/:tournamentId/addmatch', {templateUrl: 'partials/tournaments/addmatch.html', controller: TournamentAddMatchCtrl});
     $routeProvider.when('/changelog', {templateUrl: 'partials/changelog.html', controller: ChangelogCtrl});
     $routeProvider.otherwise({redirectTo: '/opponents'});
   }]).

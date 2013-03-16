@@ -45,7 +45,7 @@ angular.module('myApp.services', ['ngResource', 'ngCookies']).
     }).
     factory('Tournament', function ($resource) {
 //        return $resource('data/tournaments.json', {}, {
-        return $resource('app/player/:userId/turneringer/:tournamentId', {}, {
+        return $resource('app/player/:userId/turneringer/json', {}, {
             query: {method: 'GET', params: {}, isArray: true}
         });
     });

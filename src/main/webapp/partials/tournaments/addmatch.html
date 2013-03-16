@@ -1,0 +1,46 @@
+<ng-include src="'partials/menu.html'"></ng-include>
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+
+            <div class="btn-group" style="margin-top: 10px;">
+                <button class="btn tournamentbuttonid" ng-click="show('/tournaments')">Tournaments</button>
+                <button class="btn opponentbuttonid" ng-click="show('/opponents')">Opponents</button>
+            </div>
+
+            <fieldset>
+                <div class="control-group">
+                    <legend>Register match</legend>
+
+                    <label class="control-label">{{gametype}}</label>
+                    <div ng-show="showGametypeButtons">
+                        <button class="btn btn-primary" ng-click="selectOneVsOne()">1 vs. 1</button>
+                        <button class="btn btn-primary" ng-click="selectTwoVsTwo()">2 vs. 2</button>
+                    </div>
+
+                    <div ng-show="showPlayers">
+                        <label class="control-label">Players</label>
+                        <button ng-show="computePlayerShow(player)" ng-class="computePlayerClass(player)" ng-click="selectPlayer(player)" ng-repeat="player in players">{{player.name + player.role}}</button>
+                    </div>
+
+                    <div ng-show="showResult">
+                        <label class="control-label">Result of match</label>
+                        <button ng-show="computeBlueScoreShow(score)" ng-class="computeBlueScoreClass(score)" ng-click="selectBlueScore(score)" ng-repeat="score in blueScores">{{score.value}}</button>
+                        <br>
+                        <button ng-show="computeRedScoreShow(score)" ng-class="computeRedScoreClass(score)" ng-click="selectRedScore(score)" ng-repeat="score in redScores">{{score.value}}</button>
+                    </div>
+
+                    <div>
+                        <br>
+                        <button class="btn" ng-click="reset()">Reset</button>
+                        <button ng-show="showSave" class="btn btn-primary" ng-click="save()">Save</button>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<ng-include src="'partials/footer.html'"></ng-include>
