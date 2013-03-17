@@ -46,6 +46,11 @@ public class TurneringDefaultRankingController extends TurneringAbstractRankingC
     }
 
     @Override
+    protected List<List<Object>> createChartData2(Context context) {
+        return context.getModel().generateTurneringRatingChartData2(tournament);
+    }
+
+    @Override
     protected int getBaseline() {
         return 1000;
     }

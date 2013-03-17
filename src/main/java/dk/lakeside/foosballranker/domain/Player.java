@@ -40,7 +40,7 @@ public class Player implements Serializable {
     private String id;
     @Expose
     private String name;
-    @Expose
+//    @Expose
     private String password;
 
     @Expose

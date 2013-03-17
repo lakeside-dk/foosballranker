@@ -46,6 +46,11 @@ public class TurneringPerformanceRankingController extends TurneringAbstractRank
     }
 
     @Override
+    protected List<List<Object>> createChartData2(Context context) {
+        return context.getModel().generateTurneringPerformanceChartData2(tournament);
+    }
+
+    @Override
     protected int getBaseline() {
         return 0;
     }

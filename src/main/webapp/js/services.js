@@ -38,14 +38,22 @@ angular.module('myApp.services', ['ngResource', 'ngCookies']).
         return $resource('app/player/:userId', {}, {});
     }).
     factory('Opponent',function ($resource) {
-//        return $resource('data/opponents.json', {}, {
         return $resource('app/player/:userId/modstandere/json', {}, {
             query: {method: 'GET', params: {}, isArray: true}
         });
     }).
     factory('Tournament', function ($resource) {
-//        return $resource('data/tournaments.json', {}, {
         return $resource('app/player/:userId/turneringer/json', {}, {
+            query: {method: 'GET', params: {}, isArray: true}
+        });
+    }).
+    factory('TournamentOpponent', function ($resource) {
+        return $resource('app/player/:userId/turneringer/:turneringId/ranking/json', {}, {
+            query: {method: 'GET', params: {}, isArray: true}
+        });
+    }).
+    factory('TournamentMatches', function ($resource) {
+        return $resource('app/player/:userId/turneringer/:turneringId/kamp/list', {}, {
             query: {method: 'GET', params: {}, isArray: true}
         });
     });

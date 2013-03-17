@@ -10,8 +10,8 @@
                 </div>
                 <div class="btn-group" style="margin-top: 10px;">
                     <button class="btn opponentbuttonid" ng-click="show('/tournaments/'+tournamentId+'/addmatch')">Register match</button>
-                    <button class="btn chartbuttonid" ng-click="show('/opponents/rankingchart')">Chart</button>
-                    <button class="btn chartbuttonid" ng-click="show('/opponents/rankingchart')">Matches</button>
+                    <button class="btn chartbuttonid" ng-click="show('/tournaments/'+tournamentId+'/rankingchart')">Chart</button>
+                    <button class="btn chartbuttonid" ng-click="show('/tournaments/'+tournamentId+'/matches')">Matches</button>
                 </div>
             </div>
 
@@ -27,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="opponent in opponents | orderBy:'rating':'desc'"><td>{{$index+1}}</td><td>{{opponent.name}}</td><td>{{opponent.id}}</td><td>{{opponent.rating}}</td></tr>
+                <tr ng-repeat="opponent in opponents | orderBy:'rating':'desc'"><td>{{$index+1}}</td><td>{{opponent.playerName}}</td><td>{{opponent.playerId}}</td><td>{{opponent.rating}}</td></tr>
                 </tbody>
             </table>
         </div>

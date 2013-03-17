@@ -29,10 +29,13 @@ import dk.lakeside.foosballranker.Pair;
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.Controller;
 import dk.lakeside.foosballranker.controller.InvalidPathException;
+import dk.lakeside.foosballranker.controller.player.PlayerContext;
 import dk.lakeside.foosballranker.domain.Player;
 import dk.lakeside.foosballranker.domain.PlayerRatingSnapshot;
+import dk.lakeside.foosballranker.domain.PlayerWithRating;
 import dk.lakeside.foosballranker.domain.Tournament;
 import dk.lakeside.foosballranker.view.HtmlView;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
 import java.io.IOException;
@@ -52,14 +55,34 @@ public abstract class TurneringAbstractRankingController implements Controller {
 
         if (context.hasRoot("html")) {
             return showHtml(context);
+        } else if (context.hasRoot("json")) {
+            return showJson(context);
         } else if (context.hasRoot("bigsvgchart")) {
             return showChart(context, true);
         } else if (context.hasRoot("svgchart")) {
             return showChart(context, false);
+        } else if (context.hasRoot("chart")) {
+            return showChartData(context);
 
         } else {
             throw new InvalidPathException(context);
         }
+    }
+
+    protected View showChartData(Context context) {
+        Map<String, Object> content = new HashMap<String, Object>();
+        List<List<Object>> playerRatingsData = createChartData2(context);
+
+        content.put("data", playerRatingsData);
+        content.put("baseline", getBaseline());
+        content.put("title", "Players ranking");
+
+        return new JSonView(content);
+    }
+
+    private View showJson(Context context) {
+        Collection<PlayerRatingSnapshot> players = getSortedPlayers(context);
+        return new JSonView(players);
     }
 
     protected View showHtml(Context context) {
@@ -105,6 +128,8 @@ public abstract class TurneringAbstractRankingController implements Controller {
     protected abstract int getBaseline();
 
     protected abstract Pair<List<Player>, List<List<Integer>>> createChartData(Context context);
+
+    protected abstract List<List<Object>> createChartData2(Context context);
 
     protected abstract Collection<PlayerRatingSnapshot> getSortedPlayers( Context context );
 }

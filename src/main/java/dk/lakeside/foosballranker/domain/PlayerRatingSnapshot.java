@@ -25,17 +25,25 @@
  */
 package dk.lakeside.foosballranker.domain;
 
+import com.google.gson.annotations.Expose;
+
 /**
- * the rating for a playaer at a given time according to some algorithm
+ * the rating for a player at a given time according to some algorithm
  */
 public class PlayerRatingSnapshot implements Comparable<PlayerRatingSnapshot>
 {
+    @Expose
+    private String playerId;
+
+    @Expose
     private final String playerName;
 
+    @Expose
     private final int rating;
 
-    public PlayerRatingSnapshot( String playerName, int rating )
+    public PlayerRatingSnapshot(String playerId, String playerName, int rating)
     {
+        this.playerId = playerId;
         this.playerName = playerName;
         this.rating = rating;
     }
@@ -54,5 +62,13 @@ public class PlayerRatingSnapshot implements Comparable<PlayerRatingSnapshot>
     public int compareTo( PlayerRatingSnapshot other )
     {
         return other.rating - this.rating;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 }

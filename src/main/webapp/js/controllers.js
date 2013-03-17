@@ -35,7 +35,6 @@ LoginCtrl.$inject = ['$scope', '$location', 'auth', 'Player', '$http'];
 
 
 function OpponentsCtrl($scope, $location, Opponent, auth, $http) {
-    $scope.index = 1;
     $scope.opponents = Opponent.query({'userId':auth.userId});
     $scope.name = "";
 
@@ -49,6 +48,7 @@ function OpponentsCtrl($scope, $location, Opponent, auth, $http) {
     };
 }
 OpponentsCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
+
 
 function OpponentsChartCtrl($scope, $location, Opponent, auth, $http) {
 }
@@ -72,10 +72,11 @@ function TournamentsCtrl($scope, $location, Tournament, auth, $http) {
 TournamentsCtrl.$inject = ['$scope', '$location', 'Tournament', 'auth', '$http'];
 
 
-function TournamentCtrl($scope, $routeParams, $location, Tournament, auth, $http) {
+function TournamentCtrl($scope, $routeParams, $location, TournamentOpponent, auth, $http) {
     $scope.tournamentId = $routeParams.tournamentId;
+    $scope.opponents = TournamentOpponent.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
 }
-TournamentCtrl.$inject = ['$scope', '$routeParams', '$location', 'Tournament', 'auth', '$http'];
+TournamentCtrl.$inject = ['$scope', '$routeParams', '$location', 'TournamentOpponent', 'auth', '$http'];
 
 
 function TournamentAddMatchCtrl($scope, $routeParams, $location, Tournament, auth, $http) {
@@ -213,17 +214,27 @@ function TournamentAddMatchCtrl($scope, $routeParams, $location, Tournament, aut
     };
 
     $scope.save = function() {
-        var playerIds = ["ads","ksr"];
         var data = {"createdById":auth.userId,"playerIds":$scope.selectedPlayerIds,"score1":$scope.blueScoreValue,"score2":$scope.redScoreValue};
         $http.post('app/player/'+auth.userId+'/turneringer/'+$routeParams.tournamentId+'/kamp/add', data)
             .success(function () {
-                $location.path('#/tournaments/'+$routeParams.tournamentId);
+                init();
             }).error(function () {
                 //TODO show error
             });
     };
 }
 TournamentAddMatchCtrl.$inject = ['$scope', '$routeParams', '$location', 'Tournament', 'auth', '$http'];
+
+
+function TournamentChartCtrl($scope, $location, Opponent, auth, $http) {
+}
+TournamentChartCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
+
+
+function TournamentMatchesCtrl($scope, TournamentMatches, auth, $routeParams) {
+    $scope.matches = TournamentMatches.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
+}
+TournamentMatchesCtrl.$inject = ['$scope', 'TournamentMatches', 'auth', '$routeParams'];
 
 
 function ChangelogCtrl($scope, $location) {

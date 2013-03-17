@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'http-auth-interceptor']).
+angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'http-auth-interceptor', 'analytics']).
     directive('authDirective', function($location) {
         return {
             restrict: 'C',
@@ -49,6 +49,8 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/tournaments', {templateUrl: 'partials/tournaments.html', controller: TournamentsCtrl});
     $routeProvider.when('/tournaments/:tournamentId', {templateUrl: 'partials/tournaments/tournament.html', controller: TournamentCtrl});
     $routeProvider.when('/tournaments/:tournamentId/addmatch', {templateUrl: 'partials/tournaments/addmatch.html', controller: TournamentAddMatchCtrl});
+    $routeProvider.when('/tournaments/:tournamentId/rankingchart', {templateUrl: 'partials/tournaments/rankingchart.html', controller: TournamentChartCtrl});
+    $routeProvider.when('/tournaments/:tournamentId/matches', {templateUrl: 'partials/tournaments/matches.html', controller: TournamentMatchesCtrl});
     $routeProvider.when('/changelog', {templateUrl: 'partials/changelog.html', controller: ChangelogCtrl});
     $routeProvider.otherwise({redirectTo: '/opponents'});
   }]).
