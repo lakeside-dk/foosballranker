@@ -20,28 +20,12 @@ describe('foosball ranker', function () {
             browser().navigateTo('#/login');
         });
 
+//        afterEach(function () {
+//        });
+
         it('should render login when user navigates to /login', function () {
             expect(element('[ng-view] p:first').text()).
                 toMatch(/Register your foosball matches/);
-        });
-
-        it('should navigate to opponents when valid user fills input and press login button', function () {
-            input('userId').enter('simon');
-            input('password').enter('simon');
-//            pause();
-            element('#id_login').click();
-//            pause();
-            expect(browser().location().url()).toBe('/opponents');
-        });
-
-        it('should show errormessage when used username is entered for new account', function () {
-            input('newUserId').enter('simon');
-            input('name').enter('Simon Vogensen');
-            input('newPassword').enter('simon');
-//            pause();
-            element('#id_createaccount').click();
-//            pause();
-            expect(browser().location().url()).toBe('/login');
         });
 
         it('should navigate to opponents when valid account is created', function () {
@@ -51,21 +35,37 @@ describe('foosball ranker', function () {
             element('#id_createaccount').click();
 //            pause();
             expect(browser().location().url()).toBe('/opponents');
+            element('#id_logout').click();
+        });
+
+        it('should navigate to opponents when valid user fills input and press login button', function () {
+            input('userId').enter('simon'+randomNum);
+            input('password').enter('simon');
+//            pause();
+            element('#id_login').click();
+//            pause();
+            expect(browser().location().url()).toBe('/opponents');
+            element('#id_logout').click();
+        });
+
+        it('should show errormessage when used username is entered for new account', function () {
+            input('newUserId').enter('simon'+randomNum);
+            input('name').enter('Simon Vogensen');
+            input('newPassword').enter('simon');
+//            pause();
+            element('#id_createaccount').click();
+//            pause();
+            expect(browser().location().url()).toBe('/login');
         });
 
         it('should navigate to opponents when valid account is created when logged in', function () {
-            //TODO navigate to doesnt work??
-//            input('userId').enter('simon'+randomNum);
-//            input('password').enter('simon');
-//            element('#id_login').click();
-//            browser().navigateTo('#/login');
-//            pause();
             input('newUserId').enter('mette'+randomNum);
             input('name').enter('Mette Vogensen');
             input('newPassword').enter('mette');
             element('#id_createaccount').click();
 //            pause();
             expect(browser().location().url()).toBe('/opponents');
+            element('#id_logout').click();
         });
     });
 
@@ -76,6 +76,10 @@ describe('foosball ranker', function () {
             input('userId').enter('simon'+randomNum);
             input('password').enter('simon');
             element('#id_login').click();
+        });
+
+        afterEach(function () {
+            element('#id_logout').click();
         });
 
         it('should render /opponents when user navigates to /opponents', function () {
@@ -170,7 +174,7 @@ describe('foosball ranker', function () {
             input('password').enter('simon');
             element('#id_login').click();
             element('.tournamentbuttonid').click();
-            element('[ng-view] #table tr:nth-child(1) td:nth-child(2) button').click();
+            element('[ng-view] #table tr:nth-child(1) td:nth-child(1) button').click();
         });
 
         it('should render /tournament when user navigates to /tournament', function () {

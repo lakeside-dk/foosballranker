@@ -30,6 +30,15 @@
                 <tr ng-repeat="opponent in opponents | orderBy:'rating':'desc'"><td>{{$index+1}}</td><td>{{opponent.playerName}}</td><td>{{opponent.playerId}}</td><td>{{opponent.rating}}</td></tr>
                 </tbody>
             </table>
+
+            <fieldset>
+                <div class="control-group">
+                    <div class="controls">
+                        <button id="id_tournamentstatus" class="btn" ng-click="changeStatus()">{{statusText}}</button>
+                    </div>
+                </div>
+            </fieldset>
+
         </div>
     </div>
 </div>

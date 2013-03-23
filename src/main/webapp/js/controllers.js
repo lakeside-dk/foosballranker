@@ -72,11 +72,35 @@ function TournamentsCtrl($scope, $location, Tournament, auth, $http) {
 TournamentsCtrl.$inject = ['$scope', '$location', 'Tournament', 'auth', '$http'];
 
 
-function TournamentCtrl($scope, $routeParams, $location, TournamentOpponent, auth, $http) {
+function TournamentCtrl($scope, $routeParams, $location, Tournament, TournamentOpponent, auth, $http) {
     $scope.tournamentId = $routeParams.tournamentId;
+//    $scope.tournament = Tournament.get($routeParams.tournamentId);
+
+    $http.get('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/json', {})
+        .success(function (result) {
+            $scope.tournament = result;
+        }).error(function () {
+        });
+
     $scope.opponents = TournamentOpponent.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
+    $scope.statusText = 'Close';
+    $scope.changeStatus = function() {
+        if( $scope.tournament.endDate == null) {
+            $http.post('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/afslut', {})
+                .success(function () {
+                }).error(function () {
+                });
+            $scope.statusText = 'Open';
+        } else {
+            $http.post('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/genaabn', {})
+                .success(function () {
+                }).error(function () {
+                });
+            $scope.statusText = 'Close';
+        }
+    };
 }
-TournamentCtrl.$inject = ['$scope', '$routeParams', '$location', 'TournamentOpponent', 'auth', '$http'];
+TournamentCtrl.$inject = ['$scope', '$routeParams', '$location', 'Tournament', 'TournamentOpponent', 'auth', '$http'];
 
 
 function TournamentAddMatchCtrl($scope, $routeParams, $location, Tournament, auth, $http) {

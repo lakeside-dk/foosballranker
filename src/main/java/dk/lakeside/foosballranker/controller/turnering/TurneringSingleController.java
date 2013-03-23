@@ -28,6 +28,7 @@ package dk.lakeside.foosballranker.controller.turnering;
 import dk.lakeside.foosballranker.controller.*;
 
 public class TurneringSingleController extends DelegatingController implements ParameterizedController {
+
     public String getParameterName() {
         return TurneringContext.getParameterName();
     }

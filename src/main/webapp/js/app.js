@@ -41,8 +41,11 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
                 });
             }
         }
-    }).
-  config(['$routeProvider', function($routeProvider) {
+    })
+    .config(['AnalyticsProvider', function(AnalyticsProvider) {
+        AnalyticsProvider.account = 'UA-39369971-1';
+    }])
+    .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: LoginCtrl});
     $routeProvider.when('/opponents', {templateUrl: 'partials/opponents.html', controller: OpponentsCtrl});
     $routeProvider.when('/opponents/rankingchart', {templateUrl: 'partials/opponents/rankingchart.html', controller: OpponentsChartCtrl});
@@ -53,8 +56,8 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/tournaments/:tournamentId/matches', {templateUrl: 'partials/tournaments/matches.html', controller: TournamentMatchesCtrl});
     $routeProvider.when('/changelog', {templateUrl: 'partials/changelog.html', controller: ChangelogCtrl});
     $routeProvider.otherwise({redirectTo: '/opponents'});
-  }]).
-  config(['$httpProvider', function($httpProvider) {
+  }])
+    .config(['$httpProvider', function($httpProvider) {
     // change from post payload to appengine (jetty wont accept payload)
 //    $httpProvider.defaults.headers.post['Content-Type']='text/plain;charset=UTF-8';
 //    $httpProvider.defaults.headers.post['Accept']='*/*';
