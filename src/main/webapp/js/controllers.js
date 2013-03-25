@@ -2,7 +2,23 @@
 
 /* Controllers */
 
-function MainCntl($scope, $location, auth) {
+function MainCntl($scope, $location, auth, $routeParams) {
+
+    $scope.navigationLevelOne = ["Tournaments", "Opponents"];
+    $scope.navigationLinksLevelOne = {"Tournaments":"/tournaments", "Opponents":"/opponents"};
+
+    $scope.navigationLevelTwo = ["Ranking", "History"];
+    $scope.navigationLinksLevelTwo = {"Ranking":"/opponents", "History":"/opponents/rankingchart"};
+    $scope.navigationLevelTwoShow = true;
+
+
+    $scope.navigationLevelTwoTournament = ["Register match","Ranking", "History", "Matches"];
+    $scope.createTournamentNavigationLinks = function(tournamentId) {
+        $scope.navigationLinksLevelTwo = {"Register match":"/tournaments/"+tournamentId+"/addmatch",
+        "Ranking":"/tournaments/"+tournamentId,
+        "History":"/tournaments/"+tournamentId+"/rankingchart",
+        "Matches":"/tournaments/"+tournamentId+"/matches"};
+    };
 
     $scope.show = function(url) {
         $location.path(url);
@@ -14,7 +30,8 @@ function MainCntl($scope, $location, auth) {
         });
     };
 }
-MainCntl.$inject = ['$scope', '$location', 'auth'];
+MainCntl.$inject = ['$scope', '$location', 'auth','$routeParams'];
+
 
 function LoginCtrl($scope, $location, auth, Player, $http) {
 
@@ -35,6 +52,9 @@ LoginCtrl.$inject = ['$scope', '$location', 'auth', 'Player', '$http'];
 
 
 function OpponentsCtrl($scope, $location, Opponent, auth, $http) {
+    $scope.navigationLevelOneSelected = 'Opponents';
+    $scope.navigationLevelTwoSelected = 'Ranking';
+
     $scope.opponents = Opponent.query({'userId':auth.userId});
     $scope.name = "";
 
@@ -51,11 +71,16 @@ OpponentsCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
 
 
 function OpponentsChartCtrl($scope, $location, Opponent, auth, $http) {
+    $scope.navigationLevelOneSelected = 'Opponents';
+    $scope.navigationLevelTwoSelected = "History";
 }
 OpponentsChartCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
 
 
 function TournamentsCtrl($scope, $location, Tournament, auth, $http) {
+    $scope.navigationLevelOneSelected = 'Tournaments';
+    $scope.navigationLevelTwoShow = false;
+
     $scope.index = 1;
     $scope.tournaments = Tournament.query({'userId':auth.userId});
     $scope.type = 'ranking';
@@ -73,30 +98,39 @@ TournamentsCtrl.$inject = ['$scope', '$location', 'Tournament', 'auth', '$http']
 
 
 function TournamentCtrl($scope, $routeParams, $location, Tournament, TournamentOpponent, auth, $http) {
-    $scope.tournamentId = $routeParams.tournamentId;
-//    $scope.tournament = Tournament.get($routeParams.tournamentId);
+    $scope.navigationLevelOneSelected = '';
+    $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
+    $scope.createTournamentNavigationLinks($routeParams.tournamentId);
+    $scope.navigationLevelTwoSelected = "Ranking";
 
-    $http.get('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/json', {})
-        .success(function (result) {
-            $scope.tournament = result;
-        }).error(function () {
-        });
+    $scope.tournamentId = $routeParams.tournamentId;
+
+    getTournament();
+
+    function getTournament() {
+        $http.get('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/json', {})
+            .success(function (result) {
+                $scope.tournament = result;
+                $scope.statusText = $scope.tournament.endDate == null?'Close':'Open';
+            }).error(function () {
+            });
+    }
 
     $scope.opponents = TournamentOpponent.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
-    $scope.statusText = 'Close';
+
     $scope.changeStatus = function() {
         if( $scope.tournament.endDate == null) {
             $http.post('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/afslut', {})
                 .success(function () {
+                    getTournament();
                 }).error(function () {
                 });
-            $scope.statusText = 'Open';
         } else {
             $http.post('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/genaabn', {})
                 .success(function () {
+                    getTournament();
                 }).error(function () {
                 });
-            $scope.statusText = 'Close';
         }
     };
 }
@@ -104,6 +138,10 @@ TournamentCtrl.$inject = ['$scope', '$routeParams', '$location', 'Tournament', '
 
 
 function TournamentAddMatchCtrl($scope, $routeParams, $location, Tournament, auth, $http) {
+    $scope.navigationLevelOneSelected = '';
+    $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
+    $scope.createTournamentNavigationLinks($routeParams.tournamentId);
+    $scope.navigationLevelTwoSelected = "Register match";
 
     var ONE_ON_ONE = '1 vs. 1';
     var TWO_ON_TWO = '2 vs. 2';
@@ -251,11 +289,20 @@ TournamentAddMatchCtrl.$inject = ['$scope', '$routeParams', '$location', 'Tourna
 
 
 function TournamentChartCtrl($scope, $location, Opponent, auth, $http) {
+    $scope.navigationLevelOneSelected = '';
+    $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
+    $scope.createTournamentNavigationLinks($routeParams.tournamentId);
+    $scope.navigationLevelTwoSelected = "History";
 }
 TournamentChartCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
 
 
 function TournamentMatchesCtrl($scope, TournamentMatches, auth, $routeParams) {
+    $scope.navigationLevelOneSelected = '';
+    $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
+    $scope.createTournamentNavigationLinks($routeParams.tournamentId);
+    $scope.navigationLevelTwoSelected = "Matches";
+
     $scope.matches = TournamentMatches.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
 }
 TournamentMatchesCtrl.$inject = ['$scope', 'TournamentMatches', 'auth', '$routeParams'];

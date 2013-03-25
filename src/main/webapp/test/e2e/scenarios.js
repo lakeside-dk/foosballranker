@@ -5,6 +5,10 @@
 describe('foosball ranker', function () {
 
     var randomNum = Math.floor(Math.random() * 1000);
+    var NavOpponents = '[ng-view] navigation-radio button:nth-child(2)';
+    var NavOpponentsHistory = '[ng-view] subnavigation-radio button:nth-child(2)';
+    var NavTournaments = '[ng-view] navigation-radio button:nth-child(1)';
+    var NavTournamentHistory = '[ng-view] subnavigation-radio button:nth-child(2)';
 
     beforeEach(function () {
         browser().navigateTo('../../index.html');
@@ -89,12 +93,12 @@ describe('foosball ranker', function () {
         });
 
         it('should render /tournaments when button Tournament is clicked', function () {
-            element('.tournamentbuttonid').click();
+            element(NavTournaments).click();
             expect(browser().location().url()).toBe('/tournaments');
         });
 
-        it('should render /opponents/rankingchart when button Chart is clicked', function () {
-            element('.chartbuttonid').click();
+        it('should render /opponents/rankingchart when button History is clicked', function () {
+            element(NavOpponentsHistory).click();
             expect(browser().location().url()).toBe('/opponents/rankingchart');
         });
 
@@ -107,24 +111,24 @@ describe('foosball ranker', function () {
         });
     });
 
-    describe('chart', function () {
+    describe('opponents/history', function () {
 
         beforeEach(function () {
             browser().navigateTo('#/login');
             input('userId').enter('simon'+randomNum);
             input('password').enter('simon');
             element('#id_login').click();
-            element('.chartbuttonid').click();
+            element(NavOpponentsHistory).click();
 //            pause();
         });
 
         it('should render /tournaments when button Tournaments is clicked', function () {
-            element('.tournamentbuttonid').click();
+            element(NavTournaments).click();
             expect(browser().location().url()).toBe('/tournaments');
         });
 
         it('should render /opponents when button Opponents is clicked', function () {
-            element('.opponentbuttonid').click();
+            element(NavOpponents).click();
             expect(browser().location().url()).toBe('/opponents');
         });
     });
@@ -136,7 +140,7 @@ describe('foosball ranker', function () {
             input('userId').enter('simon'+randomNum);
             input('password').enter('simon');
             element('#id_login').click();
-            element('.tournamentbuttonid').click();
+            element(NavTournaments).click();
         });
 
         it('should render /tournaments when user navigates to /tournaments', function () {
@@ -146,7 +150,7 @@ describe('foosball ranker', function () {
         });
 
         it('should render /opponents when button Opponents is clicked', function () {
-            element('.opponentbuttonid').click();
+            element(NavOpponents).click();
             expect(browser().location().url()).toBe('/opponents');
         });
 
@@ -173,7 +177,7 @@ describe('foosball ranker', function () {
             input('userId').enter('simon'+randomNum);
             input('password').enter('simon');
             element('#id_login').click();
-            element('.tournamentbuttonid').click();
+            element(NavTournaments).click();
             element('[ng-view] #table tr:nth-child(1) td:nth-child(1) button').click();
         });
 

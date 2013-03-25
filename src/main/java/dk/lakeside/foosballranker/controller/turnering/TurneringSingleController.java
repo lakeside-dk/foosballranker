@@ -41,6 +41,7 @@ public class TurneringSingleController extends DelegatingController implements P
         sub.add("stats", new TurneringStatsController());
         sub.add("afslut", new TurneringAfslutController());
         sub.add("genaabn", new TurneringGenaabnController());
+        sub.add("json", new TurneringJsonController());
         return sub;
     }
 }

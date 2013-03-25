@@ -28,6 +28,7 @@ package dk.lakeside.foosballranker.controller.turnering;
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.SecureController;
 import dk.lakeside.foosballranker.domain.Tournament;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.RedirectView;
 import dk.lakeside.foosballranker.view.View;
 
@@ -39,6 +40,6 @@ public class TurneringAfslutController implements SecureController {
         Tournament tournament = TurneringContext.getTurnering(context);
         context.getModel().closeTournament(tournament);
         System.out.println("turnering afsluttet");
-        return new RedirectView("ranking/html");
+        return new JSonView();
     }
 }
