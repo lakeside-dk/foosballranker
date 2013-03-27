@@ -17,7 +17,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="match in matches | orderBy:'time':'desc'"><td>{{match.playerIds}}</td><td>{{match.score1}} {{match.score2}}</td><td>{{match.time}}</td></tr>
+                <tr ng-repeat="match in matches | orderBy:'time':'desc'">
+                    <td>{{match.playerIds}}</td>
+                    <td>{{match.score1}} {{match.score2}}</td>
+                    <td>{{match.time | date:'short'}}</td>
+                    <td><button class="btn" ng-click="delete(match.id)">delete</button></td>
+                </tr>
                 </tbody>
             </table>
         </div>

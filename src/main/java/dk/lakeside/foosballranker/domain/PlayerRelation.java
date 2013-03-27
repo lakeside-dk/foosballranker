@@ -30,6 +30,7 @@ import com.google.gson.annotations.Expose;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import java.util.Date;
 
 /**
  * This relation helps us fetching a players competitors - if you add a competitor or playes against a player - youll get this relation with him.
@@ -38,6 +39,8 @@ import javax.persistence.Transient;
 public class PlayerRelation {
     @Id
     private Long id;
+
+    Date created = new Date();
 
     @Expose
     @Transient

@@ -25,8 +25,10 @@
  */
 package dk.lakeside.foosballranker;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+
+import java.lang.reflect.Type;
+import java.util.Date;
 
 public class JSonHelper {
     public static String toJSon(Object object) {
@@ -38,6 +40,16 @@ public class JSonHelper {
     }
 
     private static Gson getGson() {
-        return new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateSerializer())
+                .setPrettyPrinting()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+    }
+
+    private static class DateSerializer implements JsonSerializer<Date> {
+        public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.getTime());
+        }
     }
 }

@@ -29,6 +29,7 @@ import com.google.gson.annotations.Expose;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 public class TournamentRelation {
@@ -40,6 +41,8 @@ public class TournamentRelation {
     private Long turneringId;
     @Expose
     private int startRating;
+
+    Date created = new Date();
 
     private TournamentRelation() {
     }

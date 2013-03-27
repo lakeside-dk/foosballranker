@@ -12,9 +12,9 @@ function MainCntl($scope, $location, auth, $routeParams) {
     $scope.navigationLevelTwoShow = true;
 
 
-    $scope.navigationLevelTwoTournament = ["Register match","Ranking", "History", "Matches"];
+    $scope.navigationLevelTwoTournament = ["New match","Ranking", "History", "Matches"];
     $scope.createTournamentNavigationLinks = function(tournamentId) {
-        $scope.navigationLinksLevelTwo = {"Register match":"/tournaments/"+tournamentId+"/addmatch",
+        $scope.navigationLinksLevelTwo = {"New match":"/tournaments/"+tournamentId+"/addmatch",
         "Ranking":"/tournaments/"+tournamentId,
         "History":"/tournaments/"+tournamentId+"/rankingchart",
         "Matches":"/tournaments/"+tournamentId+"/matches"};
@@ -141,7 +141,7 @@ function TournamentAddMatchCtrl($scope, $routeParams, $location, Tournament, aut
     $scope.navigationLevelOneSelected = '';
     $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
     $scope.createTournamentNavigationLinks($routeParams.tournamentId);
-    $scope.navigationLevelTwoSelected = "Register match";
+    $scope.navigationLevelTwoSelected = "New match";
 
     var ONE_ON_ONE = '1 vs. 1';
     var TWO_ON_TWO = '2 vs. 2';
@@ -288,24 +288,32 @@ function TournamentAddMatchCtrl($scope, $routeParams, $location, Tournament, aut
 TournamentAddMatchCtrl.$inject = ['$scope', '$routeParams', '$location', 'Tournament', 'auth', '$http'];
 
 
-function TournamentChartCtrl($scope, $location, Opponent, auth, $http) {
+function TournamentChartCtrl($scope, $location, Opponent, auth, $http, $routeParams) {
     $scope.navigationLevelOneSelected = '';
     $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
     $scope.createTournamentNavigationLinks($routeParams.tournamentId);
     $scope.navigationLevelTwoSelected = "History";
 }
-TournamentChartCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
+TournamentChartCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http', '$routeParams'];
 
 
-function TournamentMatchesCtrl($scope, TournamentMatches, auth, $routeParams) {
+function TournamentMatchesCtrl($scope, TournamentMatches, auth, $routeParams, $http) {
     $scope.navigationLevelOneSelected = '';
     $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
     $scope.createTournamentNavigationLinks($routeParams.tournamentId);
     $scope.navigationLevelTwoSelected = "Matches";
 
     $scope.matches = TournamentMatches.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
+
+    $scope.delete = function(id) {
+        $http.post('app/player/'+auth.userId+'/turneringer/'+$routeParams.tournamentId+'/kamp/delete?id='+id, {})
+            .success(function () {
+                $scope.matches = TournamentMatches.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
+            }).error(function () {
+            });
+    };
 }
-TournamentMatchesCtrl.$inject = ['$scope', 'TournamentMatches', 'auth', '$routeParams'];
+TournamentMatchesCtrl.$inject = ['$scope', 'TournamentMatches', 'auth', '$routeParams', '$http'];
 
 
 function ChangelogCtrl($scope, $location) {

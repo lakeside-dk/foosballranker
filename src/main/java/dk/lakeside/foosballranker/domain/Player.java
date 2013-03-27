@@ -32,6 +32,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 public class Player implements Serializable {
@@ -40,8 +41,10 @@ public class Player implements Serializable {
     private String id;
     @Expose
     private String name;
-//    @Expose
+
     private String password;
+
+    Date created = new Date();
 
     @Expose
     @Transient
