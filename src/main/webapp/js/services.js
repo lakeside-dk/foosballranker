@@ -21,10 +21,10 @@ angular.module('myApp.services', ['ngResource', 'ngCookies'])
         };
 
         self.logout = function (callback) {
+            $cookieStore.put(cookieName, null);
+            self.userId = null;
             $http.post('app/logout', {"playerId": self.userId})
                 .success(function () {
-                    $cookieStore.put(cookieName, null);
-                    self.userId = null;
                     callback();
             }).error(function () {
                 //TODO show error

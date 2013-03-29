@@ -2,46 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'http-auth-interceptor', 'analytics']).
-    directive('authDirective', function($location) {
-        return {
-            restrict: 'C',
-            link: function(scope, elem, attrs) {
-                //once Angular is started, remove class:
-//                elem.removeClass('waiting-for-angular');
-
-//                var login = elem.find('#login-holder');
-//                var main = elem.find('#content');
-//
-//                login.hide();
-                var locationBeforeLogin = null;
-
-                scope.$on('event:auth-loginRequired', function() {
-                    locationBeforeLogin = $location.path();
-//                    alert("login required "+locationBeforeLogin);
-//                    alert("login required "+ $location.path());
-                    $location.path('/login');
-                    // remember page
-
-//                    login.slideDown('slow', function() {
-//                        main.hide();
-//                    });
-                });
-                scope.$on('event:auth-loginConfirmed', function() {
-                    //TODO jump to page you are coming from
-//                    alert("login confirmed "+locationBeforeLogin);
-                    if(locationBeforeLogin != null) {
-                        $location.path(locationBeforeLogin);
-                        locationBeforeLogin = null;
-                    } else {
-                        $location.path('/opponents');
-                    }
-//                    main.show();
-//                    login.slideUp();
-                });
-            }
-        }
-    })
+var app = angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'http-auth-interceptor', 'analytics'])
     .config(['AnalyticsProvider', function(AnalyticsProvider) {
         AnalyticsProvider.account = 'UA-39369971-1';
     }])
@@ -55,9 +16,10 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/tournaments/:tournamentId/rankingchart', {templateUrl: 'partials/tournaments/rankingchart.html', controller: TournamentChartCtrl});
     $routeProvider.when('/tournaments/:tournamentId/matches', {templateUrl: 'partials/tournaments/matches.html', controller: TournamentMatchesCtrl});
     $routeProvider.when('/changelog', {templateUrl: 'partials/changelog.html', controller: ChangelogCtrl});
-    $routeProvider.otherwise({redirectTo: '/opponents'});
+    $routeProvider.otherwise({redirectTo: '/login'});
   }])
     .config(['$httpProvider', function($httpProvider) {
+        $httpProvider.responseInterceptors.push('HttpLoadingInterceptor');
     // change from post payload to appengine (jetty wont accept payload)
 //    $httpProvider.defaults.headers.post['Content-Type']='text/plain;charset=UTF-8';
 //    $httpProvider.defaults.headers.post['Accept']='*/*';

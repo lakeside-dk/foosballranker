@@ -64,6 +64,12 @@ public class PlayerTurneringController implements Controller {
     }
 
     private View showListInJSON(Context context) throws IOException {
+/*
+        try {
+            Thread.sleep(12000);
+        } catch (InterruptedException ignored) {
+        }
+*/
         Player player = PlayerContext.getPlayer(context);
         List<Tournament> turneringer = context.getModel().getTurneringer(player);
         return new JSonView(turneringer);

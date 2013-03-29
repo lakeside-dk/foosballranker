@@ -4,6 +4,10 @@
                    options='navigationLevelOne'
                    links='navigationLinksLevelOne'>
     </navigation-radio>
+
+    <div style="display: inline" ng-switch on="loading">
+        <img  ng-switch-when="true" src="images/ajax-loader.gif" style="padding-left: 11px"/>
+    </div>
 </div>
 <div class="btn-toolbar">
     <subnavigation-radio class="btn-group" data-toggle="buttons-radio"

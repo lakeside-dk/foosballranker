@@ -6,19 +6,47 @@ function MainCntl($scope, $location, auth, $routeParams) {
 
     $scope.navigationLevelOne = ["Tournaments", "Opponents"];
     $scope.navigationLinksLevelOne = {"Tournaments":"/tournaments", "Opponents":"/opponents"};
-
-    $scope.navigationLevelTwo = ["Ranking", "History"];
-    $scope.navigationLinksLevelTwo = {"Ranking":"/opponents", "History":"/opponents/rankingchart"};
     $scope.navigationLevelTwoShow = true;
 
+    $scope.navigationLevelTwoOpponent = ["Ranking", "History"];
+    $scope.createOpponentNavigationLinks = function() {
+        $scope.navigationLinksLevelTwo = {"Ranking":"/opponents", "History":"/opponents/rankingchart"};
+    };
 
-    $scope.navigationLevelTwoTournament = ["New match","Ranking", "History", "Matches"];
+    $scope.navigationLevelTwoTournament = ["Match","Ranking", "History", "Matches"];
     $scope.createTournamentNavigationLinks = function(tournamentId) {
-        $scope.navigationLinksLevelTwo = {"New match":"/tournaments/"+tournamentId+"/addmatch",
+        $scope.navigationLinksLevelTwo = {"Match":"/tournaments/"+tournamentId+"/addmatch",
         "Ranking":"/tournaments/"+tournamentId,
         "History":"/tournaments/"+tournamentId+"/rankingchart",
         "Matches":"/tournaments/"+tournamentId+"/matches"};
     };
+
+    // Show or hide loading indicator
+    $scope.loading = false;
+    $scope.$on('event:http:loading', function() {
+        $scope.loading = true;
+    });
+    $scope.$on('event:http:loaded', function() {
+        $scope.loading = false;
+    });
+
+    // Handle auth
+    var locationBeforeLogin = null;
+    $scope.$on('event:auth-loginRequired', function() {
+        locationBeforeLogin = $location.path();
+        auth.userId = null;
+        $location.path('/login');
+    });
+    $scope.$on('event:auth-loginConfirmed', function() {
+        //TODO jump to page you are coming from
+        if(locationBeforeLogin != null) {
+            $location.path(locationBeforeLogin);
+            locationBeforeLogin = null;
+        } else {
+            $location.path('/opponents');
+        }
+    });
+
 
     $scope.show = function(url) {
         $location.path(url);
@@ -34,6 +62,10 @@ MainCntl.$inject = ['$scope', '$location', 'auth','$routeParams'];
 
 
 function LoginCtrl($scope, $location, auth, Player, $http) {
+
+    if(auth.userId != null) {
+        $location.path('/opponents');
+    }
 
     $scope.login = function() {
         auth.login($scope.userId, $scope.password);
@@ -52,6 +84,8 @@ LoginCtrl.$inject = ['$scope', '$location', 'auth', 'Player', '$http'];
 
 
 function OpponentsCtrl($scope, $location, Opponent, auth, $http) {
+    $scope.navigationLevelTwo = $scope.navigationLevelTwoOpponent;
+    $scope.createOpponentNavigationLinks();
     $scope.navigationLevelOneSelected = 'Opponents';
     $scope.navigationLevelTwoSelected = 'Ranking';
 
@@ -71,6 +105,8 @@ OpponentsCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
 
 
 function OpponentsChartCtrl($scope, $location, Opponent, auth, $http) {
+    $scope.navigationLevelTwo = $scope.navigationLevelTwoOpponent;
+    $scope.createOpponentNavigationLinks();
     $scope.navigationLevelOneSelected = 'Opponents';
     $scope.navigationLevelTwoSelected = "History";
 }
@@ -98,9 +134,9 @@ TournamentsCtrl.$inject = ['$scope', '$location', 'Tournament', 'auth', '$http']
 
 
 function TournamentCtrl($scope, $routeParams, $location, Tournament, TournamentOpponent, auth, $http) {
-    $scope.navigationLevelOneSelected = '';
     $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
     $scope.createTournamentNavigationLinks($routeParams.tournamentId);
+    $scope.navigationLevelOneSelected = '';
     $scope.navigationLevelTwoSelected = "Ranking";
 
     $scope.tournamentId = $routeParams.tournamentId;
@@ -141,7 +177,7 @@ function TournamentAddMatchCtrl($scope, $routeParams, $location, Tournament, aut
     $scope.navigationLevelOneSelected = '';
     $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
     $scope.createTournamentNavigationLinks($routeParams.tournamentId);
-    $scope.navigationLevelTwoSelected = "New match";
+    $scope.navigationLevelTwoSelected = "Match";
 
     var ONE_ON_ONE = '1 vs. 1';
     var TWO_ON_TWO = '2 vs. 2';

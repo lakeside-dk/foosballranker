@@ -21,8 +21,8 @@
                 <tr ng-repeat="tournament in tournaments | orderBy:'name':'desc'">
                     <td><button class="btn btn-primary" ng-click="show('/tournaments/'+tournament.id)">{{tournament.name}}</button></td>
                     <td>{{tournament.type}}</td>
-                    <td>{{tournament.startDate}}</td>
-                    <td>{{tournament.endDate}}</td>
+                    <td>{{tournament.startDate | date:'short'}}</td>
+                    <td>{{tournament.endDate | date:'short'}}</td>
                 </tr>
                 </tbody>
             </table>
