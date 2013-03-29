@@ -21,7 +21,7 @@ angular.module('http-auth-interceptor', [])
         config: config, 
         deferred: deferred
       });
-    }
+    };
     
     this.$get = ['$rootScope','$injector', function($rootScope, $injector) {
       var $http; //initialized later because of circular dependency problem
@@ -63,6 +63,7 @@ angular.module('http-auth-interceptor', [])
         if (response.status === 401) {
           var deferred = $q.defer();
           authServiceProvider.pushToBuffer(response.config, deferred);
+          $rootScope.pending--;
           $rootScope.$broadcast('event:auth-loginRequired');
           return deferred.promise;
         }
