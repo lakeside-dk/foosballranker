@@ -38,74 +38,60 @@ angular.module('myApp.directives', [])
                 "</button>"
         };
     })
-    .directive('opponentschart', function ($http, auth) {
+    .directive('chart', function ($http, auth, $window, $routeParams) {
         return {
             restrict: 'A',
             link: function ($scope, $elm, $attr) {
 
-                $http.get('app/player/'+auth.userId+'/modstandere/chart')
-                    .success(function (content) {
+                var url;
+                if($attr['type']=="opponents") {
+                    url = 'app/player/'+auth.userId+'/modstandere/chart';
+                } else if($attr['type']=="tournament"){
+                    url = 'app/player/'+auth.userId+'/turneringer/'+$routeParams.tournamentId+'/ranking/chart';
+                }
 
-                        var data = google.visualization.arrayToDataTable(content.data);
+                $http.get(url)
+                    .success(function (data) {
 
-                        var options = {
-                            'width': 300,
-                            'height': 190,
-                            'vAxis': {
-                        'baseline': content.baseline,
-                        'minValue': content.baseline,
-                        'maxValue': content.baseline
-                            },
-                            'chartArea':{
-                                'width':200,
-                                'height':120,
-                                'left':50,
-                                'top':30
-                            },
-                            'title': content.title};
+                        var content = data;
+                        var chartdata = google.visualization.arrayToDataTable(content.data);
+                        drawChart();
 
+                        angular.element($window).bind('resize', function(){
+                            $scope.$apply(function() {
+                                drawChart();
+                            });
+                        });
 
-                        var chart = new google.visualization.LineChart($elm[0]);
+                        function getComputedStyle (element, styleProp) {
+                            if (element.currentStyle) {
+                                return element.currentStyle[styleProp];
+                            } else if ($window.getComputedStyle) {
+                                return $window.getComputedStyle(element,null).getPropertyValue(styleProp);
+                            }
+                            return '';
+                        }
 
-                        chart.draw(data, options);
+                        function drawChart() {
+                            var width = parseInt(getComputedStyle($elm[0], 'width'), 10);
 
-                    }).error(function () {
-                        //TODO show error
-                    });
-            }
-        }
-    })
-
-    .directive('tournamentchart', function ($http, auth, $routeParams) {
-        return {
-            restrict: 'A',
-            link: function ($scope, $elm, $attr) {
-
-                $http.get('app/player/'+auth.userId+'/turneringer/'+$routeParams.tournamentId+'/ranking/chart')
-                    .success(function (content) {
-
-                        var data = google.visualization.arrayToDataTable(content.data);
-
-                        var options = {
-                            'width': 300,
-                            'height': 190,
-                            'vAxis': {
-                        'baseline': content.baseline,
-                        'minValue': content.baseline,
-                        'maxValue': content.baseline
-                            },
-                            'chartArea':{
-                                'width':200,
-                                'height':120,
-                                'left':50,
-                                'top':30
-                            },
-                            'title': content.title};
-
-
-                        var chart = new google.visualization.LineChart($elm[0]);
-
-                        chart.draw(data, options);
+                            var options = {
+                                'width': width,
+                                'height':width/2,
+                                'vAxis': {
+                                    'baseline': content.baseline,
+                                    'minValue': content.baseline,
+                                    'maxValue': content.baseline
+                                },
+                                'chartArea': {
+                                    'width': '70%',
+                                    'left': 50,
+                                    'top': 30
+                                },
+                                'title': content.title};
+                            var chart = new google.visualization.LineChart($elm[0]);
+                            chart.draw(chartdata, options);
+                        }
 
                     }).error(function () {
                         //TODO show error
