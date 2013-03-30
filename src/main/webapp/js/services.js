@@ -48,10 +48,14 @@ angular.module('myApp.services', ['ngResource', 'ngCookies'])
             query: {method: 'GET', params: {}, isArray: true}
         });
     })
-    .factory('Tournament', function ($resource) {
-        return $resource('app/player/:userId/turneringer/json', {}, {
-            query: {method: 'GET', params: {}, isArray: true}
-        });
+    .service('Tournament',function Tournament($http) {
+        var self = this;
+        self.get = function (userId, tournamentId) {
+            return $http.get('app/player/'+userId+'/turneringer/'+tournamentId+'/json', {});
+        };
+        self.query = function (userId) {
+            return $http.get('app/player/'+userId+'/turneringer/json', {});
+        };
     })
     .factory('TournamentOpponent', function ($resource) {
         return $resource('app/player/:userId/turneringer/:turneringId/ranking/json', {}, {
