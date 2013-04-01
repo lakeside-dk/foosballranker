@@ -161,11 +161,14 @@ public class PlayerModstanderController implements SecureController {
     }
 
     private View showModstander(Context context) {
+/*
         Player player = PlayerContext.getPlayer(context);
         List<Pair<String,String>> playerAndCompetitorsWithRating = context.getModel().getPlayerAndCompetitorsWithRating(player);
         Map<String,Object> datamodel = new HashMap<String,Object>();
         datamodel.put("modstandere", playerAndCompetitorsWithRating);
         return new HtmlView("player-modstander-html.ftl", datamodel);
+*/
+        return null;
     }
 
     private View showModstanderData(Context context) {

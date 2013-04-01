@@ -72,6 +72,18 @@ public class Match {
         this.turneringId = turneringId;
     }
 
+    public Match(String createdById, long turneringId, int score1, int score2, String player0, String player1, String player2, String player3) {
+        this.score1 = score1;
+        this.score2 = score2;
+        playerIds = new ArrayList<String>(4);
+        playerIds.add(player0);
+        playerIds.add(player1);
+        playerIds.add(player2);
+        playerIds.add(player3);
+        this.createdById = createdById;
+        this.turneringId = turneringId;
+    }
+
     public void setTurneringId(Long turneringId) {
         this.turneringId = turneringId;
     }

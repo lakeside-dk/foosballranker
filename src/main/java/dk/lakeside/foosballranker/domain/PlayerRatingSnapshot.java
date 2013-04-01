@@ -71,4 +71,21 @@ public class PlayerRatingSnapshot implements Comparable<PlayerRatingSnapshot>
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlayerRatingSnapshot that = (PlayerRatingSnapshot) o;
+
+        if (!playerId.equals(that.playerId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return playerId.hashCode();
+    }
 }

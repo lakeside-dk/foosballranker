@@ -72,6 +72,13 @@ public class DataBuilder {
         return instance;
     }
 
+    public DataBuilder addDoubleMatch(int score1, int score2) {
+        tinySleep();
+
+        model.addMatch(new Match("player0", 0L, score1, score2, "player0", "player1", "player2", "player3"));
+        return instance;
+    }
+
     // this hack avoids unittests adding multiple matches with same timestamp
     private void tinySleep() {
         try {

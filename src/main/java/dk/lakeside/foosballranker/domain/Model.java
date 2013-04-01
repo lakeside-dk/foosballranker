@@ -281,12 +281,13 @@ public class Model implements Serializable {
             updateRating(players, match, false);
         }
 
-        SortedSet<PlayerRatingSnapshot> activePlayers = new TreeSet<PlayerRatingSnapshot>( );
+        List<PlayerRatingSnapshot> activePlayers = new ArrayList<PlayerRatingSnapshot>( );
         for (Player player : players) {
             if (player.getAntalKampe() > 0) {
-                activePlayers.add( new PlayerRatingSnapshot(player.getId(), player.getName(), player.getRating() ) );
+                activePlayers.add( new PlayerRatingSnapshot(player.getId(), player.getName(), player.getRating()));
             }
         }
+        Collections.sort(activePlayers);
 
         return activePlayers;
     }
@@ -315,12 +316,13 @@ public class Model implements Serializable {
             updateRating(players, match, true);
         }
 
-        SortedSet<PlayerRatingSnapshot> activePlayers = new TreeSet<PlayerRatingSnapshot>( );
+        List<PlayerRatingSnapshot> activePlayers = new ArrayList<PlayerRatingSnapshot>( );
         for (Player player : players) {
             if (player.getAntalKampe() > 0) {
                 activePlayers.add( new PlayerRatingSnapshot(player.getId(), player.getName(), player.getRating()) );
             }
         }
+        Collections.sort(activePlayers);
 
         return activePlayers;
     }
@@ -511,7 +513,7 @@ public class Model implements Serializable {
         // the playerRepository that gets calculated rating
         List<Player> players = getPlayers(tournament);
 
-        return generateChartData(playersInChart, kampe, players);
+        return generateChartData(playersInChart, kampe, players, tournament);
     }
 
     public List<List<Object>> generateTurneringPerformanceChartData2(Tournament tournament) {
@@ -522,7 +524,7 @@ public class Model implements Serializable {
         // the playerRepository that gets calculated rating
         List<Player> players = getPlayers(tournament);
 
-        return generateChartData(playersInChart, kampe, players);
+        return generateChartData(playersInChart, kampe, players, tournament);
     }
 
     public List<List<Object>> generatePlayerRatingChartData2(Player player) {
@@ -535,14 +537,14 @@ public class Model implements Serializable {
         List<Player> players = getPlayers(kampe);
         if(players.isEmpty()) players.add(player);
 
-        return generateChartData(playersInChart, kampe, players);
+        return generateChartData(playersInChart, kampe, players, null);
     }
 
-    private List<List<Object>> generateChartData(List<Player> playersInChart, List<Match> kampe, List<Player> players) {
+    private List<List<Object>> generateChartData(List<Player> playersInChart, List<Match> kampe, List<Player> players, Tournament tournament) {
         ModelHelper.sortKampeOldestFirst(kampe);
 
         // every player must be cleared - move rating from player!
-        clearAllPlayersRatingAndAntalKampe(players);
+        clearAllPlayersRatingAndAntalKampe(players, tournament);
 
         List<List<Object>> data = new ArrayList<List<Object>>();
         List<Object> row = new ArrayList<Object>();
@@ -580,7 +582,7 @@ public class Model implements Serializable {
             row = new ArrayList<Object>();
             row.add(i++);
             updatePlayers(players, match);
-            updateRating(players, match, false);
+            updateRating(players, match, tournament != null && tournament.isTypePerformance());
             ratings = new ArrayList<Integer>();
             for (Player p : playersInChart) {
                 int index = players.indexOf(p);
@@ -618,7 +620,7 @@ public class Model implements Serializable {
         ModelHelper.sortKampeOldestFirst(kampe);
 
         // every player must be cleared - move rating from player!
-        clearAllPlayersRatingAndAntalKampe(players);
+        clearAllPlayersRatingAndAntalKampe(players, null);
 
         // add playerRepository
         Pair<List<Player>,List<List<Integer>>> chartData = new Pair<List<Player>,List<List<Integer>>>(new ArrayList<Player>(), new ArrayList<List<Integer>>());
@@ -670,11 +672,16 @@ public class Model implements Serializable {
         return chartData;
     }
 
-    private void clearAllPlayersRatingAndAntalKampe(List<Player> players) {
+    private void clearAllPlayersRatingAndAntalKampe(List<Player> players, Tournament tournament) {
         // clear ratings
         for (Player p : players) {
             p.resetAntalKampe();
-            p.setRating( INITIAL_RATING );
+            if(tournament != null && tournament.isTypePerformance()) {
+                p.setRating(0);
+                p.setStartRating(getTurneringStartRating(tournament, p));
+            } else {
+                p.setRating(INITIAL_RATING);
+            }
         }
     }
 

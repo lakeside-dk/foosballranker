@@ -18,7 +18,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="tournament in tournaments | orderBy:'name':'desc'">
+                <tr ng-repeat="tournament in tournaments | orderBy:['-endDate', '-startDate']">
                     <td><button class="btn btn-primary" ng-click="show('/tournaments/'+tournament.id)">{{tournament.name}}</button></td>
                     <td>{{tournament.type}}</td>
                     <td>{{tournament.startDate | date:'short'}}</td>
