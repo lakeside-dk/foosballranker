@@ -60,13 +60,25 @@ public class DataBuilder {
     }
 
     public DataBuilder addSingleMatch(int score1, int score2) {
+        tinySleep();
+
         model.addMatch(new Match("player0", 0L, score1, score2, "player0", "player1"));
         return instance;
     }
 
     public DataBuilder addSingleMatch(long tournamentId, int score1, int score2) {
+        tinySleep();
         model.addMatch(new Match("player0", tournamentId, score1, score2, "player0", "player1"));
         return instance;
+    }
+
+    // this hack avoids unittests adding multiple matches with same timestamp
+    private void tinySleep() {
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void clearInstance() {

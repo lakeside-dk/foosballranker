@@ -750,6 +750,16 @@ public class Model implements Serializable {
         tournamentRepository.put(tournament);
     }
 
+    public boolean playerHasTurneringRelation(String playerId, Long tournamentId) {
+        Iterable<TournamentRelation> q = tournamentRelationsRepository.findByPlayer(playerId);
+        for (TournamentRelation tournamentRelation : q) {
+            if(tournamentRelation.getTurneringId().equals(tournamentId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private class PlayingTeams {
         private Match match;
         private Team team1;

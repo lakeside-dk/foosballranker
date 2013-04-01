@@ -26,17 +26,23 @@
 package dk.lakeside.foosballranker.controller.turnering;
 
 import dk.lakeside.foosballranker.controller.Context;
+import dk.lakeside.foosballranker.controller.player.PlayerContext;
 import dk.lakeside.foosballranker.domain.Tournament;
 
 public class TurneringContext {
+
     public static String getParameterName() {
         return "turneringid";
     }
     
     public static Tournament getTurnering(Context context) {
         Long turneringId = Long.parseLong(context.getParameters().getParameter(getParameterName()));
+        String playerId = context.getParameters().getParameter(PlayerContext.getParameterName());
         Tournament tournament = context.getModel().getTurnering(turneringId);
-        if (tournament == null) throw new RuntimeException("turnering '" + turneringId + "' not found");
+
+        if (tournament == null || !context.getModel().playerHasTurneringRelation(playerId, turneringId)) {
+            throw new RuntimeException("turnering '" + turneringId + "' not found");
+        }
         return tournament;
     }
 }
