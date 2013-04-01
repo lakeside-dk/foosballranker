@@ -62,14 +62,23 @@ public class Player implements Serializable {
     }
 
     public Player(String id, String name, int rating) {
-        //TODO verify id instead - throw error if invalid
         this.id = HtmlHelper.stripInput(id);
         this.name = HtmlHelper.stripInput(name);
         this.rating = rating;
     }
 
     public Player(String id, String name, String password) {
-        //TODO verify id instead - throw error if invalid
+
+        if(id == null || "".equals(id) || "undefined".equals(id) || !id.equals(HtmlHelper.stripInput2(id))) {
+            throw new RuntimeException("Invalid id.");
+        }
+        if(name == null || "".equals(name) || "undefined".equals(name) || !name.equals(HtmlHelper.stripInput(name))) {
+            throw new RuntimeException("Invalid name.");
+        }
+        if(password == null || "".equals(password) || "undefined".equals(password)) {
+            throw new RuntimeException("Invalid password.");
+        }
+
         this.id = HtmlHelper.stripInput(id);
         this.name = HtmlHelper.stripInput(name);
         this.password = password;

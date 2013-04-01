@@ -68,10 +68,14 @@ public class Tournament implements Serializable {
     }
     
     public Tournament(String type, String name) {
-        //TODO alt input skal garderes mod javascript injections
+        if(name == null || "".equals(name) || "undefined".equals(name) || !name.equals(HtmlHelper.stripInput(name))) {
+            throw new RuntimeException("Invalid name.");
+        }
+        if(!RANKING.equals(type) && !PERFORMANCE.equals(type)) {
+            throw new RuntimeException("Invalid type.");
+        }
+
         this.name = HtmlHelper.stripInput(name);
-//        this.id = HtmlHelper.idFromString(this.name);
-        this.name = name;
         this.startDate = new Date();
         this.type = type;
     }

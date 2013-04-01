@@ -44,8 +44,7 @@ public class PlayerSaveController implements Controller {
 
         Player player = new Player(id, name, password);
 
-        //TODO optimize - dont get all players..
-        if(context.getModel().getPlayers().contains(player)) {
+        if(context.getModel().getPlayer(id) != null) {
             throw new RuntimeException("player with id '" + player.getId() + "' already exists");
         }
 

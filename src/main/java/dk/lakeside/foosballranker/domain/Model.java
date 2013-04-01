@@ -767,6 +767,19 @@ public class Model implements Serializable {
         return false;
     }
 
+    public boolean playerHasPlayerRelation(String playerId, String opponentId) {
+        if(playerId.equals(opponentId)) {
+            return true;
+        }
+        Iterable<PlayerRelation> q = playerRelationRepository.findByPlayer(playerId);
+        for (PlayerRelation playerRelation : q) {
+            if(playerRelation.getCompetitorId().equals(opponentId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private class PlayingTeams {
         private Match match;
         private Team team1;

@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function MainCntl($scope, $location, auth, $routeParams) {
+function MainCntl($rootScope, $scope, $location, auth, $routeParams) {
 
     $scope.navigationLevelOne = ["Tournaments", "Opponents"];
     $scope.navigationLinksLevelOne = {"Tournaments":"/tournaments", "Opponents":"/opponents"};
@@ -47,18 +47,32 @@ function MainCntl($scope, $location, auth, $routeParams) {
         }
     });
 
+    // handle warnings
+    $scope.showwarning = false;
+    $scope.closewarning = function() {
+        $scope.showwarning = false;
+    };
+    $scope.warn = function(txt) {
+        $scope.warningtext = txt;
+        $scope.showwarning = true;
+    };
+    $rootScope.$on('$viewContentLoaded', function() {
+        $scope.showwarning = false;
+    });
 
     $scope.show = function(url) {
         $location.path(url);
     };
 
     $scope.logout = function() {
-        auth.logout(function() {
+        auth.logout().success(function () {
             $location.path('#/login');
+        }).error(function () {
+            $scope.warn("Logout failed.");
         });
     };
 }
-MainCntl.$inject = ['$scope', '$location', 'auth','$routeParams'];
+MainCntl.$inject = ['$rootScope', '$scope', '$location', 'auth','$routeParams'];
 
 
 function LoginCtrl($scope, $location, auth, Player, $http) {
@@ -68,7 +82,9 @@ function LoginCtrl($scope, $location, auth, Player, $http) {
     }
 
     $scope.login = function() {
-        auth.login($scope.userId, $scope.password);
+        auth.login($scope.userId, $scope.password, function() {
+            $scope.warn("Login failed.");
+        });
     };
 
     $scope.createaccount = function() {
@@ -76,7 +92,7 @@ function LoginCtrl($scope, $location, auth, Player, $http) {
             .success(function () {
                 auth.login($scope.newUserId, $scope.newPassword);
             }).error(function () {
-                //TODO show error
+                $scope.warn("Create account failed.");
             });
     };
 }
@@ -97,7 +113,7 @@ function OpponentsCtrl($scope, $location, Opponent, auth, $http) {
             .success(function () {
                 $scope.opponents = Opponent.query({'userId':auth.userId});
             }).error(function () {
-                //TODO show error
+                $scope.warn("Link to opponent failed.");
             });
     };
 }
@@ -127,6 +143,7 @@ function TournamentsCtrl($scope, Tournament, auth, $http) {
             .success(function (result) {
                 $scope.tournaments = result;
             }).error(function () {
+                $scope.warn("Data request failed.");
             });
     }
 
@@ -135,7 +152,7 @@ function TournamentsCtrl($scope, Tournament, auth, $http) {
             .success(function () {
                 getTournaments();
             }).error(function () {
-                //TODO show error
+                $scope.warn("Add tournament failed.");
             });
     };
 }
@@ -158,6 +175,7 @@ function TournamentCtrl($scope, $routeParams, Tournament, TournamentOpponent, au
                 $scope.tournament = result;
                 $scope.statusText = $scope.tournament.endDate == null?'Close':'Open';
             }).error(function () {
+                $scope.warn("Data request failed.");
             });
     }
 
@@ -169,12 +187,14 @@ function TournamentCtrl($scope, $routeParams, Tournament, TournamentOpponent, au
                 .success(function () {
                     getTournament();
                 }).error(function () {
+                    $scope.warn("Close failed.");
                 });
         } else {
             $http.post('app/player/'+auth.userId+'/turneringer/'+$scope.tournamentId+'/genaabn', {})
                 .success(function () {
                     getTournament();
                 }).error(function () {
+                    $scope.warn("Open failed.");
                 });
         }
     };
@@ -218,6 +238,7 @@ function TournamentAddMatchCtrl($scope, $routeParams, Tournament, auth, $http) {
             .success(function (result) {
                 $scope.tournament = result;
             }).error(function () {
+                $scope.warn("Data request failed.");
             });
 
         $http.get('app/player/'+auth.userId+'/turneringer/'+$routeParams.tournamentId+'/kamp/data')
@@ -227,7 +248,7 @@ function TournamentAddMatchCtrl($scope, $routeParams, Tournament, auth, $http) {
                     $scope.players[i].role = '';
                 }
             }).error(function () {
-                //TODO show error
+                $scope.warn("Data request failed.");
             });
     }
 
@@ -346,7 +367,7 @@ function TournamentAddMatchCtrl($scope, $routeParams, Tournament, auth, $http) {
             .success(function () {
                 init();
             }).error(function () {
-                //TODO show error
+                $scope.warn("Register match failed.");
             });
     };
 }
@@ -363,6 +384,7 @@ function TournamentChartCtrl($scope, Tournament, auth, $routeParams) {
         .success(function (result) {
             $scope.tournament = result;
         }).error(function () {
+            $scope.warn("Data request failed.");
         });
 }
 TournamentChartCtrl.$inject = ['$scope', 'Tournament', 'auth', '$routeParams'];
@@ -378,6 +400,7 @@ function TournamentMatchesCtrl($scope, TournamentMatches, auth, $routeParams, $h
         .success(function (result) {
             $scope.tournament = result;
         }).error(function () {
+            $scope.warn("Data request failed.");
         });
 
     $scope.matches = TournamentMatches.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
@@ -387,6 +410,7 @@ function TournamentMatchesCtrl($scope, TournamentMatches, auth, $routeParams, $h
             .success(function () {
                 $scope.matches = TournamentMatches.query({'userId':auth.userId, 'turneringId':$routeParams.tournamentId});
             }).error(function () {
+                $scope.warn("Delete failed.");
             });
     };
 }

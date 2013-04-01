@@ -27,6 +27,8 @@ package dk.lakeside.foosballranker.controller.turnering;
 
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.SecureController;
+import dk.lakeside.foosballranker.controller.player.PlayerContext;
+import dk.lakeside.foosballranker.domain.Player;
 import dk.lakeside.foosballranker.domain.Tournament;
 import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.RedirectView;
@@ -38,8 +40,13 @@ public class TurneringGenaabnController implements SecureController {
 
     public View service(final Context context) throws IOException {
         Tournament tournament = TurneringContext.getTurnering(context);
-        context.getModel().openTournament(tournament);
-        System.out.println("turnering genåbnet");
+        Player player = PlayerContext.getPlayer(context);
+        if(!context.getModel().playerHasTurneringRelation(player.getId(), tournament.getId())) {
+            throw new RuntimeException("Player not allowed to open match.");
+        } else {
+            context.getModel().openTournament(tournament);
+            System.out.println("turnering genåbnet");
+        }
         return new JSonView();
     }
 }

@@ -32,6 +32,11 @@ public class HtmlHelper {
         return s.replaceAll("[^a-zæøåA-ZÆØÅ0-9 _]", "");
     }
 
+    // only allow chars,_
+    public static String stripInput2(String s) {
+        return s.replaceAll("[^a-zæøåA-ZÆØÅ0-9_]", "");
+    }
+
     // ids are lowercase striped from spaces
     public static String idFromString(String s) {
         return s.toLowerCase().replaceAll(" ", "_").replaceAll("æ", "ae").replaceAll("ø", "oe").replaceAll("å", "aa");

@@ -29,6 +29,7 @@ import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.SecureController;
 import dk.lakeside.foosballranker.controller.turnering.TurneringContext;
 import dk.lakeside.foosballranker.domain.Match;
+import dk.lakeside.foosballranker.domain.Player;
 import dk.lakeside.foosballranker.domain.Tournament;
 import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
@@ -41,7 +42,24 @@ public class PlayerKampAddController implements SecureController {
         Tournament tournament = TurneringContext.getTurnering(context);
         Match match = context.getObjectFromPostRequest(Match.class);
         match.setTurneringId(tournament.getId());
-        context.getModel().addMatch(match);
+
+        // verify logged in player is linked to players and tournament
+        boolean verified = true;
+        Player player = PlayerContext.getPlayer(context);
+        for (String id : match.getPlayerIds()) {
+            if(!context.getModel().playerHasPlayerRelation(player.getId(), id)) {
+                verified = false;
+            }
+        }
+        if(!context.getModel().playerHasTurneringRelation(player.getId(), tournament.getId())) {
+            verified = false;
+        }
+
+        if(verified) {
+            context.getModel().addMatch(match);
+        } else {
+            throw new RuntimeException("Player not allowed to create match.");
+        }
         return new JSonView(null);
     }
 }

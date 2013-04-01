@@ -41,6 +41,7 @@ public class PlayerTurneringSaveController implements SecureController {
         RequestSource params = context.getParameters();
         String type = params.getParameter("type");
         String navn = params.getParameter("name");
+
         Tournament tournament = new Tournament(type, navn);
         Player player = PlayerContext.getPlayer(context);
         context.getModel().addTurnering(tournament, player);

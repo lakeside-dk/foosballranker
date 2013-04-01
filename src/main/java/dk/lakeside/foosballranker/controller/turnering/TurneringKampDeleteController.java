@@ -27,8 +27,11 @@ package dk.lakeside.foosballranker.controller.turnering;
 
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.Controller;
+import dk.lakeside.foosballranker.controller.player.PlayerContext;
+import dk.lakeside.foosballranker.domain.Player;
 import dk.lakeside.foosballranker.servlet.RequestSource;
 import dk.lakeside.foosballranker.domain.Tournament;
+import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.RedirectView;
 import dk.lakeside.foosballranker.view.View;
 
@@ -42,8 +45,13 @@ public class TurneringKampDeleteController implements Controller {
     public View service(final Context context) {
         RequestSource params = context.getParameters();
         long id = Long.parseLong(params.getParameter("id"));
-        context.getModel().deleteKamp(id);
-        System.out.println("kamp deleted");
-        return new RedirectView("list/html");
+        Player player = PlayerContext.getPlayer(context);
+        if(!context.getModel().playerHasTurneringRelation(player.getId(), tournament.getId())) {
+            throw new RuntimeException("Player not allowed to delete match.");
+        } else {
+            context.getModel().deleteKamp(id);
+            System.out.println("kamp deleted");
+        }
+        return new JSonView(null);
     }
 }

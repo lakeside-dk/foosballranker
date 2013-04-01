@@ -8,27 +8,21 @@ angular.module('myApp.services', ['ngResource', 'ngCookies'])
         var cookieName = 'fr-settings-1';
         self.userId = $cookieStore.get(cookieName);
 
-        self.login = function (userId, password) {
+        self.login = function (userId, password, callback) {
             $cookieStore.put(cookieName, userId);
             self.userId = userId;
             $http.post('app/login', {"playerId": userId, "password": password})
                 .success(function () {
-//                alert("login succes");
                 authService.loginConfirmed();
             }).error(function () {
-                //TODO show error
+                callback();
             });
         };
 
         self.logout = function (callback) {
             $cookieStore.put(cookieName, null);
             self.userId = null;
-            $http.post('app/logout', {"playerId": self.userId})
-                .success(function () {
-                    callback();
-            }).error(function () {
-                //TODO show error
-            });
+            return $http.post('app/logout', {"playerId": self.userId});
         }
     })
 

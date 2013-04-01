@@ -45,15 +45,25 @@ public class PlayerModstanderAddController implements SecureController {
         RequestSource params = context.getParameters();
         String id = params.getParameter("id");
 
-        //TODO show error if player not found
-        Player modstander = context.getModel().getPlayer(id);
-        if(modstander != null) {
-            context.getModel().addPlayer(modstander);
-            //TODO avoid add relation twice
-            context.getModel().addPlayerRelation(player, modstander);
-            context.getModel().addPlayerRelation(modstander, player);
-            System.out.println("modstander added");
+        if(id == null || "".equals(id)) {
+            throw new RuntimeException("player with id '" + id + "' dont exist");
         }
+
+        Player modstander = context.getModel().getPlayer(id);
+
+        if(modstander == null) {
+            throw new RuntimeException("player with id '" + id + "' dont exist");
+        }
+
+        if(context.getModel().playerHasPlayerRelation(player.getId(), id)) {
+            throw new RuntimeException("players allready linked");
+        }
+
+        context.getModel().addPlayer(modstander);
+        //TODO avoid add relation twice
+        context.getModel().addPlayerRelation(player, modstander);
+        context.getModel().addPlayerRelation(modstander, player);
+        System.out.println("modstander added");
 
         return new JSonView("");
     }
