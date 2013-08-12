@@ -134,13 +134,8 @@ public class Context {
         Auth auth = getObjectFromPostRequest(Auth.class);
 
         Player player = model.getPlayer(auth.getPlayerId());
-        if (auth.getPassword() == null) {
-            throw new RuntimeException("Missing password");
-        } else if (player == null) {
-            throw new RuntimeException("Missing player");
-        } else if (!auth.getPassword().equals(player.getPassword())) {
-//            log.info("player.id:"+player.getId()+" player.password:"+player.getPassword());
-            return null;
+        if (!auth.playerPasswordIsValid(player)) {
+            throw new RuntimeException("Invalid password or username");
         } else {
             session.setCurrentUser(auth.getPlayerId());
             return player;

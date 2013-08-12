@@ -27,6 +27,7 @@ package dk.lakeside.foosballranker.controller.player;
 
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.Controller;
+import dk.lakeside.foosballranker.domain.Auth;
 import dk.lakeside.foosballranker.servlet.RequestSource;
 import dk.lakeside.foosballranker.domain.Player;
 import dk.lakeside.foosballranker.view.JSonView;
@@ -41,8 +42,9 @@ public class PlayerSaveController implements Controller {
         String name = params.getParameter("name");
         String id = params.getParameter("id");
         String password = params.getParameter("password");
+        String hash = Auth.getPasswordHash(password);
 
-        Player player = new Player(id, name, password);
+        Player player = new Player(id, name, hash);
 
         if(context.getModel().getPlayer(id) != null) {
             throw new RuntimeException("player with id '" + player.getId() + "' already exists");
