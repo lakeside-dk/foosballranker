@@ -67,4 +67,10 @@ public class PlayerOfyRepository implements PlayerRepository {
         Objectify ofy = ObjectifyService.begin();
         ofy.put(player);
     }
+
+    @Override
+    public Iterable<Player> findByEmail(String email) {
+        Objectify ofy = ObjectifyService.begin();
+        return ofy.query(Player.class).filter("email = ", email);
+    }
 }

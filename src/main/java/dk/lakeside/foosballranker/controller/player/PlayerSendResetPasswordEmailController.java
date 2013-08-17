@@ -28,36 +28,58 @@ package dk.lakeside.foosballranker.controller.player;
 import dk.lakeside.foosballranker.controller.Context;
 import dk.lakeside.foosballranker.controller.Controller;
 import dk.lakeside.foosballranker.domain.Auth;
-import dk.lakeside.foosballranker.servlet.RequestSource;
 import dk.lakeside.foosballranker.domain.Player;
+import dk.lakeside.foosballranker.servlet.RequestSource;
 import dk.lakeside.foosballranker.view.JSonView;
 import dk.lakeside.foosballranker.view.View;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 
-public class PlayerSaveController implements Controller {
+public class PlayerSendResetPasswordEmailController implements Controller {
 
     public View service(final Context context) throws IOException {
         RequestSource params = context.getParameters();
-        String name = params.getParameter("name");
-        String id = params.getParameter("id");
-        String password = params.getParameter("password");
         String email = params.getParameter("email");
-        String hash = Auth.getHash(password);
 
-        Player player = new Player(id, name, hash, email);
-
-        if(context.getModel().getPlayer(id) != null) {
-            throw new RuntimeException("player with id '" + player.getId() + "' already exists");
+        Player player = context.getModel().getPlayerByEmail(email);
+        if(player == null) {
+            throw new RuntimeException("player not found");
         }
-        if(context.getModel().getPlayerByEmail(email) != null) {
-            throw new RuntimeException("email already taken");
-        }
+        String hash = Auth.getHash(player.getPassword());
+        String playerId = player.getId();
 
-        context.getModel().putPlayer(player);
 
-        System.out.println("player added");
+        sendMail(email, player.getName(), hash, playerId);
 
         return new JSonView("");
+    }
+
+    private void sendMail(String email, String name, String hash, String playerId) throws UnsupportedEncodingException {
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        String msgBody = "Click the link to reset your password http://foosballranker.appspot.com/app/player/sendnewpasswordemail?playerId="+playerId+"&hash="+hash+" - an email will be sent with your new password..";
+        try {
+            Message msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress("noreply@foosballranker.appspotmail.com"));
+            msg.addRecipient(Message.RecipientType.TO,
+                    new InternetAddress(email, name));
+            msg.setSubject("Password reset request from Foosball Ranker");
+            msg.setText(msgBody);
+            Transport.send(msg);
+
+        } catch (AddressException e) {
+            // ...
+        } catch (MessagingException e) {
+            // ...
+        }
     }
 }

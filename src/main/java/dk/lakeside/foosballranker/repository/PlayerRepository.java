@@ -38,4 +38,6 @@ public interface PlayerRepository {
     List<Player> findAll();
 
     void put(Player player);
+
+    Iterable<Player> findByEmail(String email);
 }

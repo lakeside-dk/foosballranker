@@ -41,6 +41,8 @@ public class Player implements Serializable {
     private String id;
     @Expose
     private String name;
+    @Expose
+    private String email;
 
     private String password;
 
@@ -82,6 +84,15 @@ public class Player implements Serializable {
         this.id = HtmlHelper.stripInput(id);
         this.name = HtmlHelper.stripInput(name);
         this.password = password;
+    }
+
+    public Player(String id, String name, String hash, String email) {
+        this(id, name, hash);
+        if("undefined".equals(email)) {
+            this.email = "";
+        } else {
+            this.email = HtmlHelper.stripEmailInput(email);
+        }
     }
 
     public String getId() {
@@ -165,5 +176,13 @@ public class Player implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

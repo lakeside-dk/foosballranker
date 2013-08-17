@@ -59,7 +59,7 @@ public class PlayerModstanderAddController implements SecureController {
             throw new RuntimeException("players allready linked");
         }
 
-        context.getModel().addPlayer(modstander);
+        context.getModel().putPlayer(modstander);
         //TODO avoid add relation twice
         context.getModel().addPlayerRelation(player, modstander);
         context.getModel().addPlayerRelation(modstander, player);

@@ -32,6 +32,11 @@ public class HtmlHelper {
         return s.replaceAll("[^a-zæøåA-ZÆØÅ0-9 _]", "");
     }
 
+    // only allow chars,_,.
+    public static String stripEmailInput(String s) {
+        return s.replaceAll("[<>\";]", "");
+    }
+
     // only allow chars,_
     public static String stripInput2(String s) {
         return s.replaceAll("[^a-zæøåA-ZÆØÅ0-9_]", "");

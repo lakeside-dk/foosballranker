@@ -30,7 +30,7 @@ public class Auth {
 
     static char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
-    public static String getPasswordHash(String s) {
+    public static String getHash(String s) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             digest.update(s.getBytes("UTF-8"));
@@ -50,6 +50,6 @@ public class Auth {
 
     public boolean playerPasswordIsValid(Player player) {
         return !(getPassword() == null || player == null)
-                && (player.getPassword().equals(getPassword()) || player.getPassword().equals(getPasswordHash(password)));
+                && (player.getPassword().equals(getPassword()) || player.getPassword().equals(getHash(password)));
     }
 }

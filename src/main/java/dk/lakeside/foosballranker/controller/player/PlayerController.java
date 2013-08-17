@@ -32,6 +32,8 @@ public class PlayerController extends DelegatingController {
     public SubControllerMap getSubControllers() {
         final SubControllerMap sub = new SubControllerMap();
         sub.add("save", new PlayerSaveController());
+        sub.add("sendresetpasswordemail", new PlayerSendResetPasswordEmailController());
+        sub.add("sendnewpasswordemail", new PlayerSendNewPasswordEmailController());
         sub.add("new", new PlayerNewController());
         sub.addDefault(new PlayerSingleController());
         return sub;

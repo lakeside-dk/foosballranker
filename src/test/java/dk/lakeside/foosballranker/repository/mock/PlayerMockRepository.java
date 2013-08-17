@@ -25,6 +25,7 @@
  */
 package dk.lakeside.foosballranker.repository.mock;
 
+import dk.lakeside.foosballranker.domain.Match;
 import dk.lakeside.foosballranker.domain.Player;
 import dk.lakeside.foosballranker.repository.PlayerRepository;
 
@@ -60,5 +61,17 @@ public class PlayerMockRepository implements PlayerRepository {
 
     public void put(Player player) {
         players.put(player.getId(), player);
+    }
+
+    @Override
+    public Iterable<Player> findByEmail(String email) {
+        for (Player player : players.values()) {
+            if(player.getEmail().equals(email)) {
+                List<Player> result = new ArrayList<Player>();
+                result.add(player);
+                return result;
+            }
+        }
+        return null;
     }
 }

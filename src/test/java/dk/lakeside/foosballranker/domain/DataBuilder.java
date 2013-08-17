@@ -55,7 +55,7 @@ public class DataBuilder {
     }
 
     public DataBuilder addPlayer() {
-        model.addPlayer(new Player("player"+ playerIndex, "Player"+playerIndex++, "pwd"));
+        model.putPlayer(new Player("player" + playerIndex, "Player" + playerIndex++, "pwd"));
         return instance;
     }
 

@@ -18,55 +18,92 @@
             <ng-include src="'partials/alert.html'"></ng-include>
 
             <fieldset>
-                <div class="control-group">
-                    <legend>Login</legend>
-                    <div id="id_login_alert"></div>
-                    <label class="control-label" for="id_username">Username</label>
-                    <div class="controls">
-                        <input ng-model="userId" name="username" maxlength="100" placeholder="Enter username..."
-                               type="text" class="input-large" id="id_username"/>
-                    </div>
+                <div ng-show="loginVisible">
+                    <div class="control-group">
+                        <legend>Login</legend>
+                        <div id="id_login_alert"></div>
+                        <label class="control-label" for="id_username">Username</label>
+                        <div class="controls">
+                            <input ng-model="userId" name="username" maxlength="100" placeholder="Enter username..."
+                                   type="text" class="input-large" id="id_username"/>
+                        </div>
 
-                    <label class="control-label" for="id_password">Password</label>
-                    <div class="controls">
-                        <input ng-model="password" name="password" maxlength="100" placeholder="Enter password..."
-                               type="password" class="input-large" id="id_password"/>
+                        <label class="control-label" for="id_password">Password</label>
+                        <div class="controls">
+                            <input ng-model="password" name="password" maxlength="100" placeholder="Enter password..."
+                                   type="password" class="input-large" id="id_password"/>
+                        </div>
                     </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-primary" id="id_login" ng-click="login()">Login</button>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-primary" id="id_login" ng-click="login()">Login</button>
+                            <span style="margin-left:20px;" class="help-inline"><a ng-click="showResetPassword()" href="">I forgot my password :(</a></span>
+                        </div>
+                        <div style="margin-top:20px;margin-left:20px;margin-bottom: 20px;">or</div>
+                        <div class="controls">
+                            <button class="btn btn-primary" id="id_create" ng-click="showCreateAccount()">Create New Account</button>
+                        </div>
                     </div>
+                    <hr class="bs-docs-separator">
                 </div>
 
-                <div class="control-group">
-                    <legend>Create account</legend>
-                    <label class="control-label" for="id_newusername">Username</label>
-                    <div class="controls">
-                        <input ng-model="newUserId" name="newUsername" maxlength="100" placeholder="Enter username..."
-                               type="text" class="input-large" id="id_newusername"/>
+                <div ng-show="resetPasswordVisible">
+                    <div class="control-group">
+                        <legend>Reset password</legend>
+                        <label class="control-label" for="id_resetemail">Email</label>
+                        <div class="controls">
+                            <input ng-model="resetemail" name="resetemail" maxlength="100" placeholder="Enter email..."
+                                   type="text" class="input-large" id="id_resetemail"/>
+                        </div>
                     </div>
-                    <label class="control-label" for="id_name">Name</label>
-                    <div class="controls">
-                        <input ng-model="name" name="name" maxlength="100" placeholder="Enter name..."
-                               type="text" class="input-large" id="id_name"/>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-primary" id="id_reset" ng-click="resetPassword()">Reset</button>
+                            <span class="help-inline">You will receive an email with a random generated password</span>
+                        </div>
                     </div>
-
-                    <label class="control-label" for="id_newpassword">Password</label>
-                    <div class="controls">
-                        <input ng-model="newPassword" name="newPassword" maxlength="100" placeholder="Enter password..."
-                               type="password" class="input-large" id="id_newpassword"/>
-                    </div>
+                    <hr class="bs-docs-separator">
                 </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-primary" id="id_createaccount" ng-click="createaccount()">Create account</button>
+
+                <div ng-show="createAccountVisible">
+                    <div class="control-group">
+                        <legend>Create account</legend>
+                        <label class="control-label" for="id_newusername">Username</label>
+                        <div class="controls">
+                            <input ng-model="newUserId" name="newUsername" maxlength="100" placeholder="Enter username..."
+                                   type="text" class="input-large" id="id_newusername"/>
+                        </div>
+
+                        <label class="control-label" for="id_name">Name</label>
+                        <div class="controls">
+                            <input ng-model="name" name="name" maxlength="100" placeholder="Enter name..."
+                                   type="text" class="input-large" id="id_name"/>
+                        </div>
+
+                        <label class="control-label" for="id_newpassword">Password</label>
+                        <div class="controls">
+                            <input ng-model="newPassword" name="newPassword" maxlength="100" placeholder="Enter password..."
+                                   type="password" class="input-large" id="id_newpassword"/>
+                        </div>
+
+                        <label class="control-label" for="id_email">Email (optional)</label>
+                        <div class="controls">
+                            <input ng-model="email" name="email" maxlength="100" placeholder="Enter email..."
+                                   type="text" class="input-large" id="id_email"/>
+                            <span class="help-block">Enables us to reset your password if you forget</span>
+                        </div>
+
                     </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-primary" id="id_createaccount" ng-click="createaccount()">Create account</button>
+                        </div>
+                    </div>
+                    <hr class="bs-docs-separator">
                 </div>
             </fieldset>
 
-            <hr class="bs-docs-separator">
-            <div>Spread the word!</div>
+            <legend>Spread the word!</legend>
             <div><img src="images/barcode.png"/></div>
             <div>Let your friends scan the code</div>
         </div>

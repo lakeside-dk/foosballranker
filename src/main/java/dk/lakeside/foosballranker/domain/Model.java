@@ -42,7 +42,7 @@ public class Model implements Serializable {
     TournamentRelationsRepository tournamentRelationsRepository = new TournamentRelationsOfyRepository();
     MatchRepository matchRepository = new MatchOfyRepository();
 
-    public void addPlayer(Player player) {
+    public void putPlayer(Player player) {
         playerRepository.put(player);
     }
 
@@ -778,6 +778,15 @@ public class Model implements Serializable {
             }
         }
         return false;
+    }
+
+    public Player getPlayerByEmail(String email) {
+        // there should be only one!
+        Iterable<Player> q = playerRepository.findByEmail(email);
+        if(!q.iterator().hasNext()) {
+            return null;
+        }
+        return q.iterator().next();
     }
 
     private class PlayingTeams {

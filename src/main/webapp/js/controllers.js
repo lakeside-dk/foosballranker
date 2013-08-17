@@ -4,8 +4,8 @@
 
 function MainCntl($rootScope, $scope, $location, auth, $routeParams) {
 
-    $scope.navigationLevelOne = ["Tournaments", "Opponents"];
-    $scope.navigationLinksLevelOne = {"Tournaments":"/tournaments", "Opponents":"/opponents"};
+    $scope.navigationLevelOne = ["Opponents", "Tournaments"];
+    $scope.navigationLinksLevelOne = {"Opponents":"/opponents", "Tournaments":"/tournaments"};
     $scope.navigationLevelTwoShow = true;
 
     $scope.navigationLevelTwoOpponent = ["Ranking", "History"];
@@ -13,11 +13,12 @@ function MainCntl($rootScope, $scope, $location, auth, $routeParams) {
         $scope.navigationLinksLevelTwo = {"Ranking":"/opponents", "History":"/opponents/rankingchart"};
     };
 
-    $scope.navigationLevelTwoTournament = ["Match","Ranking", "History", "Matches"];
+    $scope.navigationLevelTwoTournament = ["Ranking", "History","New Match","Matches"];
     $scope.createTournamentNavigationLinks = function(tournamentId) {
-        $scope.navigationLinksLevelTwo = {"Match":"/tournaments/"+tournamentId+"/addmatch",
+        $scope.navigationLinksLevelTwo = {
         "Ranking":"/tournaments/"+tournamentId,
         "History":"/tournaments/"+tournamentId+"/rankingchart",
+        "New Match":"/tournaments/"+tournamentId+"/addmatch",
         "Matches":"/tournaments/"+tournamentId+"/matches"};
     };
 
@@ -77,6 +78,10 @@ MainCntl.$inject = ['$rootScope', '$scope', '$location', 'auth','$routeParams'];
 
 function LoginCtrl($scope, $location, auth, Player, $http) {
 
+    $scope.loginVisible=true;
+    $scope.resetPasswordVisible=false;
+    $scope.createAccountVisible=false;
+
     if(auth.userId != null) {
         $location.path('/opponents');
     }
@@ -87,12 +92,30 @@ function LoginCtrl($scope, $location, auth, Player, $http) {
         });
     };
 
+    $scope.showResetPassword = function() {
+      $scope.resetPasswordVisible = true;
+//      $scope.loginVisible = false;
+    };
+
+    $scope.showCreateAccount = function() {
+      $scope.createAccountVisible = true;
+//      $scope.loginVisible = false;
+    };
+
     $scope.createaccount = function() {
-        $http.post('app/player/save?name='+$scope.name+'&id='+$scope.newUserId+'&password='+$scope.newPassword, {})
+        $http.post('app/player/save?name='+$scope.name+'&id='+$scope.newUserId+'&password='+$scope.newPassword+'&email='+$scope.email, {})
             .success(function () {
                 auth.login($scope.newUserId, $scope.newPassword);
             }).error(function () {
                 $scope.warn("Create account failed.");
+            });
+    };
+
+    $scope.resetPassword = function() {
+        $http.post('app/player/sendresetpasswordemail?email='+$scope.resetemail, {})
+            .success(function () {
+            }).error(function () {
+                $scope.warn("reset failed");
             });
     };
 }
@@ -206,7 +229,7 @@ function TournamentAddMatchCtrl($scope, $routeParams, Tournament, auth, $http) {
     $scope.navigationLevelOneSelected = '';
     $scope.navigationLevelTwo = $scope.navigationLevelTwoTournament;
     $scope.createTournamentNavigationLinks($routeParams.tournamentId);
-    $scope.navigationLevelTwoSelected = "Match";
+    $scope.navigationLevelTwoSelected = "New Match";
 
     var ONE_ON_ONE = '1 vs. 1';
     var TWO_ON_TWO = '2 vs. 2';
