@@ -46,11 +46,11 @@ public class PlayerKampDataController implements SecureController {
         Map<String,Object> datamodel = new HashMap<String,Object>();
 
         Set<Player> playersSet = new HashSet<Player>(context.getModel().getPlayerAndCompetitors(player));
-        playersSet.addAll(context.getModel().getPlayers(tournament));
 
         List<Player> players = new ArrayList<Player>(playersSet);
         ModelHelper.sortPlayersByName(players);
 
+        //TODO split up in players with relation in tournament, players in tournament with no relation, players with relation not in tournament
         datamodel.put("players", players);
         datamodel.put("player", context.currentUser());
 

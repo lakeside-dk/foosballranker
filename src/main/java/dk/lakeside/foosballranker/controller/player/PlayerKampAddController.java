@@ -42,20 +42,9 @@ public class PlayerKampAddController implements SecureController {
         Tournament tournament = TurneringContext.getTurnering(context);
         Match match = context.getObjectFromPostRequest(Match.class);
         match.setTurneringId(tournament.getId());
-
-        // verify logged in player is linked to players and tournament
-        boolean verified = true;
         Player player = PlayerContext.getPlayer(context);
-        for (String id : match.getPlayerIds()) {
-            if(!context.getModel().playerHasPlayerRelation(player.getId(), id)) {
-                verified = false;
-            }
-        }
-        if(!context.getModel().playerHasTurneringRelation(player.getId(), tournament.getId())) {
-            verified = false;
-        }
 
-        if(verified) {
+        if(context.getModel().verifyPlayerCanCreateMatch(player, tournament, match)) {
             context.getModel().addMatch(match);
         } else {
             throw new RuntimeException("Player not allowed to create match.");

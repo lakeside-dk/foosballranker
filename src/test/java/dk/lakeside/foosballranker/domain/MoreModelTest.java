@@ -37,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 public class MoreModelTest {
 
@@ -240,13 +242,28 @@ public class MoreModelTest {
 
     @Test
     public void whenShowPlayerChartWithNoMatchesThenShowEmptyChartWithOnlyThePlayersStartrating() {
-        DataBuilder.instance(model)
-                .addPlayer();
+        DataBuilder.instance(model).addPlayer();
         Pair<List<Player>, List<List<Integer>>> chartData = model.generatePlayerRatingChartData(model.getPlayer("player0"), true);
         // one player
         assertEquals(1, chartData.getFirst().size());
         // zero matches - only startrating
         assertEquals(1, chartData.getSecond().get(0).size());
+    }
+
+    @Test
+    public void whenPlayerHasOpponentLinkedThenPlayerCanCreateMatchWithOpponent() {
+        DataBuilder.instance(model)
+                .addPlayer()
+                .addPlayer()
+                .addRankingTournament();
+
+        Match match = new Match("player0", 0L, 1, 2, "player0", "player1");
+        boolean canCreateMatch = model.verifyPlayerCanCreateMatch(model.getPlayer("player0"), model.getTurnering(0L), match);
+        assertFalse(canCreateMatch);
+
+        model.addPlayerRelation(model.getPlayer("player0"), model.getPlayer("player1"));
+        canCreateMatch = model.verifyPlayerCanCreateMatch(model.getPlayer("player0"), model.getTurnering(0L), match);
+        assertTrue(canCreateMatch);
     }
 
     @Ignore

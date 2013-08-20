@@ -789,6 +789,20 @@ public class Model implements Serializable {
         return q.iterator().next();
     }
 
+    public boolean verifyPlayerCanCreateMatch(Player player, Tournament tournament, Match match) {
+        // verify logged in player is linked to players and tournament
+        boolean verified = true;
+        for (String id : match.getPlayerIds()) {
+            if(!playerHasPlayerRelation(player.getId(), id)) {
+                verified = false;
+            }
+        }
+        if(!playerHasTurneringRelation(player.getId(), tournament.getId())) {
+            verified = false;
+        }
+        return verified;
+    }
+
     private class PlayingTeams {
         private Match match;
         private Team team1;
