@@ -6,11 +6,11 @@ describe('foosball ranker', function () {
 
     var randomNum = Math.floor(Math.random() * 100000);
 
-    var NavOpponents = '[ng-view] navigation-radio button:nth-child(2)';
+    var NavOpponents = '[ng-view] navigation-radio button:nth-child(1)';
     var NavOpponentsHistory = '[ng-view] subnavigation-radio button:nth-child(2)';
-    var NavTournaments = '[ng-view] navigation-radio button:nth-child(1)';
-    var NavTournamentHistory = '[ng-view] subnavigation-radio button:nth-child(3)';
-    var NavTournamentNewMatch = '[ng-view] subnavigation-radio button:nth-child(1)';
+    var NavTournaments = '[ng-view] navigation-radio button:nth-child(2)';
+    var NavTournamentHistory = '[ng-view] subnavigation-radio button:nth-child(2)';
+    var NavTournamentNewMatch = '[ng-view] subnavigation-radio button:nth-child(3)';
     var NavTournamentMatches = '[ng-view] subnavigation-radio button:nth-child(4)';
 
     function login(randomNum) {
@@ -49,8 +49,8 @@ describe('foosball ranker', function () {
         });
 
         it('should render login when user navigates to /login', function () {
-            expect(element('[ng-view] p:first').text()).
-                toMatch(/Register your foosball matches/);
+            expect(element('[ng-view] legend:first').text()).
+                toMatch('Login');
         });
 
         it('should navigate to opponents when valid account is created', function () {
