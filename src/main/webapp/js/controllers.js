@@ -139,6 +139,20 @@ function OpponentsCtrl($scope, $location, Opponent, auth, $http) {
                 $scope.warn("Link to opponent failed.");
             });
     };
+
+  $scope.remove = function(id) {
+    $http.post('app/player/'+auth.userId+'/modstandere/remove?id='+id, {})
+        .success(function () {
+          $scope.opponents = Opponent.query({'userId':auth.userId});
+        }).error(function () {
+          $scope.warn("Remove opponent failed.");
+        });
+  };
+
+  $scope.show = function(id) {
+    return id != auth.userId;
+  };
+
 }
 OpponentsCtrl.$inject = ['$scope', '$location', 'Opponent', 'auth', '$http'];
 

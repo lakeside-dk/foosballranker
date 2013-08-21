@@ -20,7 +20,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="opponent in opponents | orderBy:'rating':'desc'"><td>{{$index+1}}</td><td>{{opponent.name}}</td><td>{{opponent.id}}</td><td>{{opponent.rating}}</td></tr>
+                <tr ng-repeat="opponent in opponents | orderBy:'rating':'desc'">
+                    <td>{{$index+1}}</td>
+                    <td>{{opponent.name}}</td>
+                    <td>{{opponent.id}}</td>
+                    <td>{{opponent.rating}}</td>
+                    <td><button class="btn" ng-show="show(opponent.id)" ng-click="remove(opponent.id)">remove</button></td>
+                </tr>
                 </tbody>
             </table>
 

@@ -31,4 +31,7 @@ public interface PlayerRelationRepository {
     Iterable<PlayerRelation> findByPlayer(String playerId);
 
     void put(PlayerRelation playerRelation);
+
+    public void delete(Long id);
+
 }

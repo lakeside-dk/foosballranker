@@ -47,6 +47,9 @@ public class PlayerModstanderController implements SecureController {
         if (context.hasRoot("add")) {
             Player player = PlayerContext.getPlayer(context);
             return context.subContext().service(new PlayerModstanderAddController(player));
+        } else if (context.hasRoot("remove")) {
+            Player player = PlayerContext.getPlayer(context);
+            return context.subContext().service(new PlayerModstanderRemoveController(player));
         } else if (context.hasRoot("html")) {
             return showModstander(context);
         } else if (context.hasRoot("json")) {

@@ -145,6 +145,15 @@ public class Model implements Serializable {
         playerRelationRepository.put(playerRelation);
     }
 
+    public void removePlayerRelation(Player player, Player competitor) {
+        Iterable<PlayerRelation> q = playerRelationRepository.findByPlayer(player.getId());
+        for (PlayerRelation playerRelation : q) {
+            if(playerRelation.getCompetitorId().equals(competitor.getId())) {
+                playerRelationRepository.delete(playerRelation.getId());
+            }
+        }
+    }
+
     public void addTurnering(Tournament tournament, Player player) {
         tournamentRepository.put(tournament);
         addTournamentRelation(tournament, player);

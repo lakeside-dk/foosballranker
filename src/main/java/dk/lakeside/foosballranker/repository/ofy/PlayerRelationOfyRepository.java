@@ -41,4 +41,9 @@ public class PlayerRelationOfyRepository implements PlayerRelationRepository {
         ofy.put(playerRelation);
     }
 
+    public void delete(Long id) {
+        Objectify ofy = ObjectifyService.begin();
+        ofy.delete(PlayerRelation.class, id);
+    }
+
 }

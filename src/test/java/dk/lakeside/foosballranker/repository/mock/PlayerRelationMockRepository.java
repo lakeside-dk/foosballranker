@@ -52,4 +52,9 @@ public class PlayerRelationMockRepository implements PlayerRelationRepository {
         playerRelation.setId(id);
         playerRelations.put(id, playerRelation);
     }
+
+    @Override
+    public void delete(Long id) {
+        playerRelations.remove(id);
+    }
 }
